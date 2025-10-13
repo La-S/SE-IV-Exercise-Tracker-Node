@@ -2,6 +2,7 @@ import db  from "../models/index.js";
 const Session = db.session;
 
 const authenticate = (req, res, next) => {
+  next();
   return true;
   // let token = null;
  

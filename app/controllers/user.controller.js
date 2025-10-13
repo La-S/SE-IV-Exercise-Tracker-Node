@@ -2,13 +2,14 @@ import db  from "../models/index.js";
 const User = db.user;
 const Op = db.Sequelize.Op;
 const exports = {};
+const missingAttr = "Missing attribute: "
+const invalidRole = "Invalid role entered. user or admin are acceptable roles."
 // Create and Save a new User
 exports.create = (req, res) => {
   // Validate request
-  if (!req.body.fName) {
-    res.status(400).send({
-      message: "Content can not be empty!",
-    });
+  let attributeError = validateAttributes(req.body)
+  if (attributeError){
+    res.status(400).send({message: attributeError})
     return;
   }
 
@@ -18,6 +19,7 @@ exports.create = (req, res) => {
     fName: req.body.fName,
     lName: req.body.lName,
     email: req.body.email,
+    role: req.body.role ? req.body.role : "user",
     // refresh_token: req.body.refresh_token,
     // expiration_date: req.body.expiration_date
   };
@@ -100,7 +102,10 @@ exports.findByEmail = (req, res) => {
 // Update a User by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
-
+  if (!validateRole(req.body.role)){
+    res.status(400).send({message: invalidRole})
+    return;
+  }
   User.update(req.body, {
     where: { id: id },
   })
@@ -147,5 +152,20 @@ exports.delete = (req, res) => {
     });
 };
 
+function validateAttributes(req){
+  if (!req.fName)
+    return missingAttr + "fName";
+  if (!req.lName)
+    return missingAttr + "lName";
+  if (!req.email)
+    return missingAttr + "email";
+  if(!validateRole(req.role))
+    return invalidRole
+}
 
+function validateRole(role){
+  if(role && !(role === "user" || role === "admin"))
+    return false
+  return true;
+}
 export default exports;
