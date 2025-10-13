@@ -1,4 +1,4 @@
-import db  from "../models/index.js";
+import db from "../models/index.js";
 const User = db.user;
 const Op = db.Sequelize.Op;
 const exports = {};
@@ -8,8 +8,8 @@ const invalidRole = "Invalid role entered. user or admin are acceptable roles."
 exports.create = (req, res) => {
   // Validate request
   let attributeError = validateAttributes(req.body)
-  if (attributeError){
-    res.status(400).send({message: attributeError})
+  if (attributeError) {
+    res.status(400).send({ message: attributeError })
     return;
   }
 
@@ -102,8 +102,8 @@ exports.findByEmail = (req, res) => {
 // Update a User by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
-  if (!validateRole(req.body.role)){
-    res.status(400).send({message: invalidRole})
+  if (!validateRole(req.body.role)) {
+    res.status(400).send({ message: invalidRole })
     return;
   }
   User.update(req.body, {
@@ -152,19 +152,19 @@ exports.delete = (req, res) => {
     });
 };
 
-function validateAttributes(req){
+function validateAttributes(req) {
   if (!req.fName)
     return missingAttr + "fName";
   if (!req.lName)
     return missingAttr + "lName";
   if (!req.email)
     return missingAttr + "email";
-  if(!validateRole(req.role))
+  if (!validateRole(req.role))
     return invalidRole
 }
 
-function validateRole(role){
-  if(role && !(role === "user" || role === "admin"))
+function validateRole(role) {
+  if (role && !(role === "user" || role === "admin"))
     return false
   return true;
 }
