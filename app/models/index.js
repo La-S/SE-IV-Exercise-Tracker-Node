@@ -50,4 +50,5 @@ db.user = User;
 //   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
 // );
 
+db.sequelize.sync();
 export default db;
