@@ -23,7 +23,7 @@ exports.create = async (req, res) => {
     fName: req.body.fName,
     lName: req.body.lName,
     email: req.body.email,
-    role: req.body.role ? req.body.role : "user",
+    role: req.body.role ?? "user",
     // refresh_token: req.body.refresh_token,
     // expiration_date: req.body.expiration_date
   };
