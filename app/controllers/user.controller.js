@@ -1,14 +1,19 @@
-import db  from "../models/index.js";
+import db from "../models/index.js";
 const User = db.user;
 const Op = db.Sequelize.Op;
 const exports = {};
+const missingAttr = "Missing attribute: "
+const invalidRole = "Invalid role entered. user or admin are acceptable roles."
 // Create and Save a new User
-exports.create = (req, res) => {
+exports.create = async (req, res) => {
   // Validate request
-  if (!req.body.fName) {
-    res.status(400).send({
-      message: "Content can not be empty!",
-    });
+  let attributeError = validateAttributes(req.body)
+  if (attributeError) {
+    res.status(400).send({ message: attributeError })
+    return;
+  }
+  if (await getUserForEmail(req.body.email)){
+    res.status(409).send({ message: `user with email ${req.body.email} already exists. Use a different email.`});
     return;
   }
 
@@ -18,6 +23,7 @@ exports.create = (req, res) => {
     fName: req.body.fName,
     lName: req.body.lName,
     email: req.body.email,
+    role: req.body.role ?? "user",
     // refresh_token: req.body.refresh_token,
     // expiration_date: req.body.expiration_date
   };
@@ -98,9 +104,17 @@ exports.findByEmail = (req, res) => {
 };
 
 // Update a User by the id in the request
-exports.update = (req, res) => {
+exports.update = async (req, res) => {
   const id = req.params.id;
-
+  if (!validateRole(req.body.role)) {
+    res.status(400).send({ message: invalidRole })
+    return;
+  }
+  let userForEmail = await getUserForEmail(req.body.email)
+  if (userForEmail && (JSON.stringify(userForEmail) !== JSON.stringify(await getUserForId(id)))){
+    res.status(409).send({ message: `user with email ${req.body.email} already exists. Use a different email.`});
+    return;
+  }
   User.update(req.body, {
     where: { id: id },
   })
@@ -147,5 +161,30 @@ exports.delete = (req, res) => {
     });
 };
 
+function validateAttributes(req) {
+  if (!req.fName)
+    return missingAttr + "fName";
+  if (!req.lName)
+    return missingAttr + "lName";
+  if (!req.email)
+    return missingAttr + "email";
+  if (!validateRole(req.role))
+    return invalidRole
+}
 
+async function validateRole(role) {
+  if (role && !(role === "user" || role === "admin"))
+    return false
+  return true;
+}
+function getUserForEmail(email){
+   return User.findOne({
+    where: {
+      email: email,
+    },
+  });
+}
+async function getUserForId(id){
+  return User.findByPk(id);
+}
 export default exports;

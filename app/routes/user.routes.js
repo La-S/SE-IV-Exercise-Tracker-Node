@@ -3,6 +3,7 @@
   import { Router } from "express";
   var router = Router()
 
+  //AUTHENTICATE ALWAYS RETURNS TRUE
 
   // Create a new User
   router.post("/", [authenticate], users.create);

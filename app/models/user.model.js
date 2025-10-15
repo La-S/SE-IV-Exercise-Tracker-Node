@@ -9,17 +9,20 @@ const User = SequelizeInstance.define("user", {
     primaryKey: true,
   },
   fName: {
-    type: Sequelize.STRING,
+    type: Sequelize.STRING(25),
     allowNull: false,
   },
   lName: {
-    type: Sequelize.STRING,
+    type: Sequelize.STRING(25),
     allowNull: false,
   },
   email: {
-    type: Sequelize.STRING,
+    type: Sequelize.STRING(100),
     allowNull: false,
   },
+  role :{
+    type: Sequelize.ENUM('user', 'admin')
+    }
   // refresh_token: {
   //   type: Sequelize.STRING(512),
   //   allowNull: true
