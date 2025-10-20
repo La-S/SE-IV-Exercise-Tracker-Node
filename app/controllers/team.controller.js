@@ -17,7 +17,7 @@ exports.create = (req, res) => {
     teamId: req.params.teamId,
     team_name: req.body.teamName,
   };
-  // Save Lesson in the database
+  // Save Team in the database
   Team.create(team)
     .then((data) => {
       res.send(data);
@@ -29,7 +29,7 @@ exports.create = (req, res) => {
       });
     });
 };
-// Retrieve all Lessons from the database.
+// Retrieve all Teams from the database.
 exports.findAll = (req, res) => {
   const teamId = req.query.teamId;
   var condition = teamId
@@ -40,7 +40,7 @@ exports.findAll = (req, res) => {
       }
     : null;
 
-  Lesson.findAll({ where: condition })
+  Team.findAll({ where: condition })
     .then((data) => {
       res.send(data);
     })
@@ -50,99 +50,5 @@ exports.findAll = (req, res) => {
       });
     });
 };
-// Retrieve all Lessons for a tutorial from the database.
-// exports.findAllForTutorial = (req, res) => {
-//   const tutorialId = req.params.tutorialId;
-
-//   Lesson.findAll({ where: { tutorialId: tutorialId } })
-//     .then((data) => {
-//       res.send(data);
-//     })
-//     .catch((err) => {
-//       res.status(500).send({
-//         message: err.message || "Some error occurred while retrieving lessons.",
-//       });
-//     });
-// };
-// // Find a single Lesson with an id
-// exports.findOne = (req, res) => {
-//   const id = req.params.id;
-//   Lesson.findByPk(id)
-//     .then((data) => {
-//       if (data) {
-//         res.send(data);
-//       } else {
-//         res.status(404).send({
-//           message: `Cannot find Lesson with id=${id}.`,
-//         });
-//       }
-//     })
-//     .catch((err) => {
-//       res.status(500).send({
-//         message: "Error retrieving Lesson with id=" + id,
-//       });
-//     });
-// };
-// // Update a Lesson by the id in the request
-// exports.update = (req, res) => {
-//   const id = req.params.id;
-//   Lesson.update(req.body, {
-//     where: { id: id },
-//   })
-//     .then((num) => {
-//       if (num == 1) {
-//         res.send({
-//           message: "Lesson was updated successfully.",
-//         });
-//       } else {
-//         res.send({
-//           message: `Cannot update Lesson with id=${id}. Maybe Lesson was not found or req.body is empty!`,
-//         });
-//       }
-//     })
-//     .catch((err) => {
-//       res.status(500).send({
-//         message: "Error updating Lesson with id=" + id,
-//       });
-//     });
-// };
-// // Delete a Lesson with the specified id in the request
-// exports.delete = (req, res) => {
-//   const id = req.params.id;
-//   Lesson.destroy({
-//     where: { id: id },
-//   })
-//     .then((num) => {
-//       if (num == 1) {
-//         res.send({
-//           message: "Lesson was deleted successfully!",
-//         });
-//       } else {
-//         res.send({
-//           message: `Cannot delete Lesson with id=${id}. Maybe Lesson was not found!`,
-//         });
-//       }
-//     })
-//     .catch((err) => {
-//       res.status(500).send({
-//         message: "Could not delete Lesson with id=" + id,
-//       });
-//     });
-// };
-
-// // Find all published Lessons
-// exports.findAllPublished = (req, res) => {
-//   const lessonId = req.query.lessonId;
-
-//   Lesson.findAll({ where: { published: true } })
-//     .then((data) => {
-//       res.send(data);
-//     })
-//     .catch((err) => {
-//       res.status(500).send({
-//         message: err.message || "Some error occurred while retrieving lessons.",
-//       });
-//     });
-// };
 
 export default exports;

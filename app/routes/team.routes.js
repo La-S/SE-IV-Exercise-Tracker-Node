@@ -16,7 +16,7 @@
   // Update a Team with id
   router.put("/:teamId", [authenticate], team.update);
 
-  // Delete a Lesson with id
+  // Delete a Team with id
   router.delete("/:teamId", [authenticate], team.delete);
   */
 
