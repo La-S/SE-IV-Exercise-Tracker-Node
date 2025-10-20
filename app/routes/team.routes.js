@@ -9,15 +9,13 @@
   // Find all the Teams (todo: idk why you'd ever do this and seems like a security concern but...)
   router.get("/", [authenticate], team.findAll);
 
-  /*
   // Retrieve a single Team with id
-  router.get("/:teamId", [authenticate], team.findOne);
+  router.get("/:id", [authenticate], team.findOne);
 
   // Update a Team with id
-  router.put("/:teamId", [authenticate], team.update);
+  router.put("/:id", [authenticate], team.update);
 
   // Delete a Team with id
-  router.delete("/:teamId", [authenticate], team.delete);
-  */
+  router.delete("/:id", [authenticate], team.delete);
 
 export default router
