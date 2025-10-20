@@ -7,7 +7,7 @@ const Team = SequelizeInstance.define("team", {
     autoIncrement: true,
     primaryKey: true,
   },
-  team_name: {
+  name: {
       type: Sequelize.STRING(128),
     }
   });

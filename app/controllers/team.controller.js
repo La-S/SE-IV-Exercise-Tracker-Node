@@ -5,17 +5,16 @@ const exports = {};
 // Create and Save a new Team
 exports.create = (req, res) => {
   // Validate request
-  if (!req.body.title) {
+  if (!req.body.name) {
     res.status(400).send({
-      message: "Content can not be empty!",
+      message: "Content must have a id and name!",
     });
     return;
   }
 
   // Create a Team
   const team = {
-    teamId: req.params.teamId,
-    team_name: req.body.teamName,
+    name: req.body.name,
   };
   // Save Team in the database
   Team.create(team)
@@ -31,11 +30,11 @@ exports.create = (req, res) => {
 };
 // Retrieve all Teams from the database.
 exports.findAll = (req, res) => {
-  const teamId = req.query.teamId;
-  var condition = teamId
+  const id = req.query.id;
+  var condition = id
     ? {
-        teamId: {
-          [Op.like]: `%${teamId}%`,
+        id: {
+          [Op.like]: `%${id}%`,
         },
       }
     : null;
