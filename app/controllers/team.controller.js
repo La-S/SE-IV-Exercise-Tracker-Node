@@ -2,6 +2,7 @@ import db  from "../models/index.js";
 const Team = db.team;
 const Op = db.Sequelize.Op;
 const exports = {};
+
 // Create and Save a new Team
 exports.create = (req, res) => {
   // Validate request
@@ -24,10 +25,11 @@ exports.create = (req, res) => {
     .catch((err) => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the Team.",
+          err.message || "Some error occurred while creating the team.",
       });
     });
 };
+
 // Retrieve all Teams from the database.
 exports.findAll = (req, res) => {
   const id = req.query.id;
@@ -45,7 +47,7 @@ exports.findAll = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Some error occurred while retrieving Teams.",
+        message: err.message || "Some error occurred while retrieving teams.",
       });
     });
 };
@@ -59,13 +61,13 @@ exports.findOne = (req, res) => {
         res.send(data);
       } else {
         res.status(404).send({
-          message: `Cannot find Team with id=${id}.`,
+          message: `Cannot find team with id ${id}. Team may not exist.`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error retrieving Team with id=" + id,
+        message: `Error retrieving team with id ${id}`,
       });
     });
 };
@@ -94,14 +96,14 @@ exports.update = (req, res) => {
           message: "Team was updated successfully.",
         });
       } else {
-        res.send({
-          message: `Cannot update Team with id=${id}. Maybe Team was not found or req.body is empty!`,
+        res.status(404).send({
+          message: `Cannot update team with id ${id}. Team may not exist.`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error updating Team with id=" + id,
+        message: `Error updating team with id ${id}`,
       });
     });
 };
@@ -118,14 +120,14 @@ exports.delete = (req, res) => {
           message: "Team was deleted successfully!",
         });
       } else {
-        res.send({
-          message: `Cannot delete Team with id=${id}. Maybe Team was not found!`,
+        res.status(404).send({
+          message: `Cannot delete team with id ${id}. Team may not exist.`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Could not delete Team with id=" + id,
+        message: `Unknown error deleting team with id ${id}`,
       });
     });
 };
