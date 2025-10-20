@@ -5,6 +5,7 @@ import sequelize from "../config/sequelizeInstance.js";
 // Models
 
 import User from "./user.model.js";
+import Team from "./team.model.js";
 
 
 const db = {};
@@ -12,6 +13,7 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.user = User;
+db.team = Team;
 
 // foreign key for session
 // leaving these here as examples for object relations - John
@@ -25,6 +27,9 @@ db.user = User;
 //   { as: "user" },
 //   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
 // );
+
+// foreign key for teams
+// db.team.hasMany
 
 // // foreign key for tutorials
 // db.user.hasMany(
