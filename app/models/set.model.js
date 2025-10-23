@@ -21,7 +21,7 @@ const Set = SequelizeInstance.define("set", {
     type:Sequelize.INTEGER,
   },
   goal_dist:{
-    type:Sequelize.INTEGER,
+    type:Sequelize.FLOAT,
   },
   actual_weight:{
     type:Sequelize.INTEGER,
@@ -33,8 +33,11 @@ const Set = SequelizeInstance.define("set", {
     type:Sequelize.INTEGER,
   },
   actual_dist:{
-    type:Sequelize.INTEGER,
+    type:Sequelize.FLOAT,
   },
+  distance_units:{
+    type:Sequelize.ENUM('mi', 'm', 'km', 'feet', 'laps')
+  }
   });
 
 export default Set;
