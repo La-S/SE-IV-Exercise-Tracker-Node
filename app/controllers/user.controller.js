@@ -189,7 +189,7 @@ async function validateRole(role) {
     return false
   return true;
 }
-function getUserForEmail(email){
+async function getUserForEmail(email){
    return User.findOne({
     where: {
       email: email,
