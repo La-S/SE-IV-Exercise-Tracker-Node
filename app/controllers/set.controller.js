@@ -1,135 +1,150 @@
-import db  from "../models/index.js";
+import db from "../models/index.js";
 const Set = db.set;
 const Op = db.Sequelize.Op;
 const exports = {};
 
 // Create and Save a new set
 exports.create = (req, res) => {
-  // Validate request
-  if (!req.body.name) {
-    res.status(400).send({
-      message: "Content must have a name!",
-    });
-    return;
-  }
+    // Validate request
+    if (!req.body.name) {
+        res.status(400).send({
+            message: "Content must have a name!",
+        });
+        return;
+    }
 
-  // Create a set
-  const set = {
-    name: req.body.name,
-  };
-  // Save set in the database
-  set.create(set)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while creating the set.",
-      });
-    });
+    // Create a set
+    const set = {
+        name: req.body.name,
+    };
+    // Save set in the database
+    set.create(set)
+        .then((data) => {
+            res.send(data);
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while creating the set.",
+            });
+        });
 };
 
 // Retrieve all sets from the database.
 exports.findAll = (req, res) => {
-  const id = req.query.id;
-  var condition = id
-    ? {
-        id: {
-          [Op.like]: `%${id}%`,
-        },
-      }
-    : null;
+    const id = req.query.id;
+    var condition = id
+        ? {
+            id: {
+                [Op.like]: `%${id}%`,
+            },
+        }
+        : null;
 
-  set.findAll({ where: condition })
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message || "Some error occurred while retrieving sets.",
-      });
-    });
+    set.findAll({ where: condition })
+        .then((data) => {
+            res.send(data);
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: err.message || "Some error occurred while retrieving sets.",
+            });
+        });
 };
 
 // Find a single set with an id
 exports.findOne = (req, res) => {
-  const id = req.params.id;
-  set.findByPk(id)
-    .then((data) => {
-      if (data) {
-        res.send(data);
-      } else {
-        res.status(404).send({
-          message: `Cannot find set with id ${id}. set may not exist.`,
+    const id = req.params.id;
+    set.findByPk(id)
+        .then((data) => {
+            if (data) {
+                res.send(data);
+            } else {
+                res.status(404).send({
+                    message: `Cannot find set with id ${id}. set may not exist.`,
+                });
+            }
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: `Error retrieving set with id ${id}`,
+            });
         });
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: `Error retrieving set with id ${id}`,
-      });
-    });
 };
 
 // Update a set by the id in the request
 exports.update = (req, res) => {
-  const id = req.params.id;
+    const id = req.params.id;
 
-  // Validate request
-  if (!req.body.name) {
-    res.status(400).send({
-      message: "Content must have a name!",
-    });
-    return;
-  }
+    // Validate request
+    if (!req.body.name) {
+        res.status(400).send({
+            message: "Content must have a name!",
+        });
+        return;
+    }
 
-  const updatedData = {
-    name: req.body.name,
-  };
-  set.update(updatedData, {
-    where: { id: id },
-  })
-    .then((num) => {
-      if (num == 1) {
-        res.send({
-          message: "set was updated successfully.",
-        });
-      } else {
-        res.status(404).send({
-          message: `Cannot update set with id ${id}. set may not exist.`,
-        });
-      }
+    const updatedData = {
+        name: req.body.name,
+    };
+    set.update(updatedData, {
+        where: { id: id },
     })
-    .catch((err) => {
-      res.status(500).send({
-        message: `Error updating set with id ${id}`,
-      });
-    });
+        .then((num) => {
+            if (num == 1) {
+                res.send({
+                    message: "set was updated successfully.",
+                });
+            } else {
+                res.status(404).send({
+                    message: `Cannot update set with id ${id}. set may not exist.`,
+                });
+            }
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: `Error updating set with id ${id}`,
+            });
+        });
 };
 
 // Delete a set with the specified id in the request
 exports.delete = (req, res) => {
-  const id = req.params.id;
-  set.destroy({
-    where: { id: id },
-  })
-    .then((num) => {
-      if (num == 1) {
-        res.send({
-          message: "set was deleted successfully!",
-        });
-      } else {
-        res.status(404).send({
-          message: `Cannot delete set with id ${id}. set may not exist.`,
-        });
-      }
+    const id = req.params.id;
+    set.destroy({
+        where: { id: id },
     })
-    .catch((err) => {
-      res.status(500).send({
-        message: `Unknown error deleting set with id ${id}`,
-      });
-    });
+        .then((num) => {
+            if (num == 1) {
+                res.send({
+                    message: "set was deleted successfully!",
+                });
+            } else {
+                res.status(404).send({
+                    message: `Cannot delete set with id ${id}. set may not exist.`,
+                });
+            }
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: `Unknown error deleting set with id ${id}`,
+            });
+        });
+};
+
+//have valid exerciseId checked in exercise controller?
+exports.findForExercise = (req, res) => {
+    const exerciseId = req.query.exerciseId
+
+    set.findAll({ where: { exercise_id: exerciseId } })
+        .then((data) => {
+            return data;
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: err.message || "Some error occurred while retrieving sets.",
+            });
+        });
 };
 
 export default exports;
