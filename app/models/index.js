@@ -14,6 +14,7 @@ db.sequelize = sequelize;
 
 db.user = User;
 db.team = Team;
+db.exercise = Exercise;
 
 // foreign key for session
 // leaving these here as examples for object relations - John
