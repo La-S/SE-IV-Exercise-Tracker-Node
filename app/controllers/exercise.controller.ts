@@ -15,16 +15,16 @@ interface Exercise {
 // Create and Save a new Exercise
 exports.create = (req: pkg.Request, res: pkg.Response) => {
   // Validate request
-  if (!req.body!.workout_id == null) {
+  if (req.body!.workout_id == null) {
     res.status(400).send({
-      message: "Content must have a name!",
+      message: "Content must have a workout_id!",
     });
     return;
   }
 
   if (req.body.exercise_template_id == null) {
     res.status(400).send({
-      message: "Content must have a type!",
+      message: "Content must have a exercise_template_id!",
     });
     return;
   }
