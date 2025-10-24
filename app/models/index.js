@@ -6,6 +6,7 @@ import sequelize from "../config/sequelizeInstance.js";
 
 import User from "./user.model.js";
 import Team from "./team.model.js";
+import Exercise from "./exercise.model.js"
 
 
 const db = {};

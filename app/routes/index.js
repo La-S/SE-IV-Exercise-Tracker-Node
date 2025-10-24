@@ -3,6 +3,7 @@ import { Router } from "express";
 import AuthRoutes from "./auth.routes.js";
 import UserRoutes from "./user.routes.js";
 import Team from "./team.routes.js";
+import Exercise from "./exercise.routes.ts";
 
 
 const router = Router();

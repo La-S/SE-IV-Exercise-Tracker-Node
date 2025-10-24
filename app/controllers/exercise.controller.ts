@@ -4,57 +4,52 @@ const Op = db.Sequelize.Op;
 const exports: any = {};
 import pkg from 'express';
 
-// interface ExerciseTemplate {
-//   id?: number,
-//   name: string,
-//   type: number,
-//   muscle_group: number,
-// }
+interface Exercise {
+  id?: number,
+  workout_id: number,
+  exercise_template_id: number,
+  notes: string,
+  rest_timer: number,
+}
 
-// Create and Save a new Exercise Template
+// Create and Save a new Exercise
 exports.create = (req: pkg.Request, res: pkg.Response) => {
   // Validate request
-  if (!req.body!.name) {
+  if (!req.body!.workout_id == null) {
     res.status(400).send({
       message: "Content must have a name!",
     });
     return;
   }
 
-  if (req.body.type == null) {
+  if (req.body.exercise_template_id == null) {
     res.status(400).send({
       message: "Content must have a type!",
     });
     return;
   }
 
-  if (req.body.muscle_group == null) {
-    res.status(400).send({
-      message: "Content must have a muscle_group!",
-    });
-    return;
-  }
-
-  // Create an exerciseTemplate
-  const exerciseTemplate = {
-    name: req.body!.name,
-    type: req.body!.type,
-    muscle_group: req.body.muscle_group,
+  // Create an exercise
+  const exercise: Exercise = {
+    workout_id: req.body.workout_id,
+    exercise_template_id: req.body.exercise_template_id,
+    notes: req.body.notes,
+    rest_timer: req.body.rest_timer,
   };
-  // Save exerciseTemplate in the database
-  Exercise.create(exerciseTemplate)
+  // Save exercise in the database
+  Exercise.create(exercise)
     .then((data: any) => {
       res.send(data);
     })
     .catch((err: Error) => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the exercise template.",
+          err.message || "Some error occurred while creating the exercise.",
       });
     });
 };
 
-// Retrieve all Exercise Templates from the database.
+// Retrieve all Exercise from the database.
 exports.findAll = (req: pkg.Request, res: pkg.Response) => {
   const id = req.query.id;
   var condition = id
@@ -71,12 +66,12 @@ exports.findAll = (req: pkg.Request, res: pkg.Response) => {
     })
     .catch((err: Error) => {
       res.status(500).send({
-        message: err.message || "Some error occurred while retrieving exercise templates.",
+        message: err.message || "Some error occurred while retrieving exercises.",
       });
     });
 };
 
-// Find a single exerciseTemplate with an id
+// Find a single exercise with an id
 exports.findOne = (req: pkg.Request, res: pkg.Response) => {
   const id = req.params.id;
   Exercise.findByPk(id)
@@ -85,33 +80,34 @@ exports.findOne = (req: pkg.Request, res: pkg.Response) => {
         res.send(data);
       } else {
         res.status(404).send({
-          message: `Cannot find exercise template with id ${id}. exerciseTemplate may not exist.`,
+          message: `Cannot find exercise with id ${id}. exercise may not exist.`,
         });
       }
     })
     .catch((err: Error) => {
       res.status(500).send({
-        message: `Error retrieving exercise template with id ${id}`,
+        message: `Error retrieving exercise with id ${id}`,
       });
     });
 };
 
-// Update a exerciseTemplate by the id in the request
+// Update a exercise by the id in the request
 exports.update = (req: pkg.Request, res: pkg.Response) => {
   const id = req.params.id;
 
   // Validate request
-  if (!req.body.name && !req.body.type && !req.body.muscle_group) {
+  if (!req.body.workout_id && !req.body.exercise_template_id && !req.body.notes && !req.body.rest_timer) {
     res.status(400).send({
       message: "Content must have new data to update!",
     });
     return;
   }
 
-  const updatedData = {
-    name: req.body.name,
-    type: req.body.type ?? undefined,
-    muscle_group: req.body.muscle_group ??  undefined,
+  const updatedData: Exercise = {
+    workout_id: req.body.workout_id,
+    exercise_template_id: req.body.exercise_template_id ?? undefined,
+    notes: req.body.notes ?? undefined,
+    rest_timer: req.body.rest_timer ?? undefined,
   };
 
   Exercise.update(updatedData, {
@@ -120,22 +116,22 @@ exports.update = (req: pkg.Request, res: pkg.Response) => {
     .then((num: number) => {
       if (num == 1) {
         res.send({
-          message: "exerciseTemplate was updated successfully.",
+          message: "exercise was updated successfully.",
         });
       } else {
         res.status(404).send({
-          message: `Cannot update exercise template with id ${id}. exerciseTemplate may not exist.`,
+          message: `Cannot update exercise with id ${id}. exercise may not exist.`,
         });
       }
     })
     .catch((err: Error) => {
       res.status(500).send({
-        message: `Error updating exercise template with id ${id}`,
+        message: `Error updating exercise with id ${id}`,
       });
     });
 };
 
-// Delete a exerciseTemplate with the specified id in the request
+// Delete a exercise with the specified id in the request
 exports.delete = (req: pkg.Request, res: pkg.Response) => {
   const id = req.params.id;
   Exercise.destroy({
@@ -144,17 +140,17 @@ exports.delete = (req: pkg.Request, res: pkg.Response) => {
     .then((num: number) => {
       if (num == 1) {
         res.send({
-          message: "exerciseTemplate was deleted successfully!",
+          message: "exercise was deleted successfully!",
         });
       } else {
         res.status(404).send({
-          message: `Cannot delete exercise template with id ${id}. exerciseTemplate may not exist.`,
+          message: `Cannot delete exercise with id ${id}. exercise may not exist.`,
         });
       }
     })
     .catch((err: Error) => {
       res.status(500).send({
-        message: `Unknown error deleting exercise template with id ${id}`,
+        message: `Unknown error deleting exercise with id ${id}`,
       });
     });
 };
