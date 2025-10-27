@@ -14,31 +14,31 @@ interface ExerciseTemplate {
 // Create and Save a new Exercise Template
 exports.create = (req: pkg.Request, res: pkg.Response) => {
   // Validate request
-  if (!req.body!.name) {
+  if (!req.body.name) {
     res.status(400).send({
       message: "Content must have a name!",
     });
     return;
   }
 
-  if (req.body.type == null) {
+  if (!req.body.type) {
     res.status(400).send({
       message: "Content must have a type!",
     });
     return;
   }
 
-  if (req.body.muscle_group == null) {
+  if (req.body.type === "strength" && !req.body.muscle_group) {
     res.status(400).send({
-      message: "Content must have a muscle_group!",
+      message: "Content must have a muscle_group if type is strength!",
     });
     return;
   }
 
   // Create an exerciseTemplate
   const exerciseTemplate: ExerciseTemplate = {
-    name: req.body!.name,
-    type: req.body!.type,
+    name: req.body.name,
+    type: req.body.type,
     muscle_group: req.body.muscle_group,
   };
   // Save exerciseTemplate in the database
@@ -105,8 +105,9 @@ exports.findOne = (req: pkg.Request, res: pkg.Response) => {
 };
 
 // Update a exerciseTemplate by the id in the request
-exports.update = (req: pkg.Request, res: pkg.Response) => {
+exports.update = async (req: pkg.Request, res: pkg.Response) =>  {
   const id = req.params.id;
+  let data = await ExerciseTemplate.findByPk(id);
 
   // Validate request
   if (!req.body.name && !req.body.type && !req.body.muscle_group) {
@@ -116,10 +117,19 @@ exports.update = (req: pkg.Request, res: pkg.Response) => {
     return;
   }
 
+  if (req.body.type === "strength" || (!req.body.type && data.type == "strength")) {
+    if(!req.body.muscle_group) {
+      res.status(400).send({
+        message: "exercise type strength must have a muscle_group!",
+      });
+      return;
+    }
+  }
+
   const updatedData = {
     name: req.body.name,
-    type: req.body.type ?? undefined,
-    muscle_group: req.body.muscle_group ?? undefined,
+    type: req.body.type,
+    muscle_group: req.body.muscle_group,
   };
 
   ExerciseTemplate.update(updatedData, {
