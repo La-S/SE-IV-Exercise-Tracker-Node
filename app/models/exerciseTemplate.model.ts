@@ -2,7 +2,7 @@ import Sequelize from "sequelize";
 import SequelizeInstance from "../config/sequelizeInstance.js";
 
 const allowedTypes = ["strength", "cardio", "mobility", "other"]
-const allowedMuscles = ["bicep", "tricep", "forearm", "shoulders", "back", "chest", "core", "quad", "hamstring", "calf", "glute", "other"]
+const allowedMuscles = ["bicep", "tricep", "forearm", "shoulder", "back", "chest", "core", "quad", "hamstring", "calf", "glute", "other"]
 const ExerciseTemplate = SequelizeInstance.define("exerciseTemplate", {
   id: {
     type: Sequelize.INTEGER,
