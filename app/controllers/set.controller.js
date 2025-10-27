@@ -5,20 +5,22 @@ const exports = {};
 
 // Create and Save a new set
 exports.create = (req, res) => {
-    // Validate request
-    if (!req.body.name) {
-        res.status(400).send({
-            message: "Content must have a name!",
-        });
-        return;
-    }
 
     // Create a set
     const set = {
-        name: req.body.name,
+        completed: req.body.completed ?? false,
+        goal_weight: req.body.goalWeight ?? null,
+        actual_weight: req.body.actualWeight ?? null,
+        goal_reps: req.body.goalReps ?? null,
+        actual_reps: req.body.actualReps ?? null,
+        goal_time: req.body.goalTime ?? null,
+        actual_time: req.body.actualTime ?? null,
+        goal_dist: req.body.goalDist ?? null,
+        actual_dist: req.body.actualDist ?? null,
+        dist_units: req.body.distUnits ?? null
     };
     // Save set in the database
-    set.create(set)
+    Set.create(set)
         .then((data) => {
             res.send(data);
         })
@@ -41,7 +43,7 @@ exports.findAll = (req, res) => {
         }
         : null;
 
-    set.findAll({ where: condition })
+    Set.findAll({ where: condition })
         .then((data) => {
             res.send(data);
         })
@@ -55,7 +57,7 @@ exports.findAll = (req, res) => {
 // Find a single set with an id
 exports.findOne = (req, res) => {
     const id = req.params.id;
-    set.findByPk(id)
+    Set.findByPk(id)
         .then((data) => {
             if (data) {
                 res.send(data);
@@ -76,18 +78,7 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
     const id = req.params.id;
 
-    // Validate request
-    if (!req.body.name) {
-        res.status(400).send({
-            message: "Content must have a name!",
-        });
-        return;
-    }
-
-    const updatedData = {
-        name: req.body.name,
-    };
-    set.update(updatedData, {
+    Set.update(req.body, {
         where: { id: id },
     })
         .then((num) => {
@@ -111,7 +102,7 @@ exports.update = (req, res) => {
 // Delete a set with the specified id in the request
 exports.delete = (req, res) => {
     const id = req.params.id;
-    set.destroy({
+    Set.destroy({
         where: { id: id },
     })
         .then((num) => {
@@ -136,14 +127,12 @@ exports.delete = (req, res) => {
 exports.findForExercise = (req, res) => {
     const exerciseId = req.query.exerciseId
 
-    set.findAll({ where: { exercise_id: exerciseId } })
+    Set.findAll({ where: { exercise_id: exerciseId } })
         .then((data) => {
             return data;
         })
         .catch((err) => {
-            res.status(500).send({
-                message: err.message || "Some error occurred while retrieving sets.",
-            });
+            throw new Error(`Error getting sets for exercise with id: ${exerciseId}`);
         });
 };
 

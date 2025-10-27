@@ -36,7 +36,7 @@ const Set = SequelizeInstance.define("set", {
   actual_dist: {
     type: Sequelize.FLOAT,
   },
-  distance_units: {
+  dist_units: {
     type: Sequelize.ENUM(allowedUnits),
     validate: {
       isIn: {

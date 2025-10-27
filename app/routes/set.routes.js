@@ -2,19 +2,19 @@
   import { Router } from "express";
   var router = Router()
 
-  // Create a new Team
+  // Create a new set
   router.post("/", set.create);
 
-  // Find all the Teams (todo: idk why you'd ever do this and seems like a security concern but...)
+  // Find all the Sets
   router.get("/", set.findAll);
 
-  // Retrieve a single Team with id
+  // Retrieve a single set with id
   router.get("/:id", set.findOne);
 
-  // Update a Team with id
+  // Update a set with id
   router.put("/:id", set.update);
 
-  // Delete a Team with id
+  // Delete a set with id
   router.delete("/:id", set.delete);
 
 export default router

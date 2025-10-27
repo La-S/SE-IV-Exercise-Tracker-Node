@@ -3,7 +3,6 @@ const User = db.user;
 const Op = db.Sequelize.Op;
 const exports = {};
 const missingAttr = "Missing attribute: "
-const invalidRole = "Invalid role entered. user or admin are acceptable roles."
 // Create and Save a new User
 exports.create = async (req, res) => {
   // Validate request
@@ -20,8 +19,8 @@ exports.create = async (req, res) => {
   // Create a User
   const user = {
     id: req.body.id,
-    fName: req.body.fName,
-    lName: req.body.lName,
+    first_name: req.body.firstName,
+    last_name: req.body.lastName,
     email: req.body.email,
     role: req.body.role ?? "user",
     // refresh_token: req.body.refresh_token,
@@ -175,10 +174,10 @@ exports.delete = (req, res) => {
 };
 
 function validateAttributes(req) {
-  if (!req.fName)
-    return missingAttr + "fName";
-  if (!req.lName)
-    return missingAttr + "lName";
+  if (!req.firstName)
+    return missingAttr + "firstName";
+  if (!req.lastName)
+    return missingAttr + "lastName";
   if (!req.email)
     return missingAttr + "email";
 }
