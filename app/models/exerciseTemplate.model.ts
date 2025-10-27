@@ -11,10 +11,10 @@ const ExerciseTemplate = SequelizeInstance.define("exerciseTemplate", {
     type: Sequelize.STRING(100),
   },
   type: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.ENUM('strength', 'cardio', 'mobility', 'other'),
   },
   muscle_group: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.ENUM("bicep", "tricep", "forearm", "shoulders", "back", "chest", "core", "quad", "hamstring", "calf", "glute"),
   },
 });
 
