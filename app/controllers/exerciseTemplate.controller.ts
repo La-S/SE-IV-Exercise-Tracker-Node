@@ -127,8 +127,8 @@ exports.update = async (req: pkg.Request, res: pkg.Response) =>  {
   }
 
   const updatedData = {
-    name: req.body.name,
-    type: req.body.type,
+    name: req.body.name ?? undefined,
+    type: req.body.type ?? undefined,
     muscle_group: req.body.muscle_group,
   };
 
