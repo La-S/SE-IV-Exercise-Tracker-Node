@@ -26,7 +26,7 @@ const ExerciseTemplate = SequelizeInstance.define("exerciseTemplate", {
     validate: {
       isIn: {
         args: [allowedMuscles],
-        msg: 'Muscle group not allowed. Allowed muscle groups are bicep, tricep, forearm, shoulders, back, chest, core, quad, hamstring, calf, glute, and other'
+        msg: 'Muscle group not allowed. Allowed muscle groups are bicep, tricep, forearm, shoulder, back, chest, core, quad, hamstring, calf, glute, and other'
       }
     }
   },
