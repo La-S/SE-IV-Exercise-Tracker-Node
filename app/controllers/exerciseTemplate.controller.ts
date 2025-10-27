@@ -7,8 +7,8 @@ import pkg from 'express';
 interface ExerciseTemplate {
   id?: number,
   name: string,
-  type: number,
-  muscle_group: number,
+  type: string,
+  muscle_group?: string,
 }
 
 // Create and Save a new Exercise Template
