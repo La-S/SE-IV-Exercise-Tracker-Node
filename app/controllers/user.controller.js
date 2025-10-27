@@ -12,8 +12,8 @@ exports.create = async (req, res) => {
     res.status(400).send({ message: attributeError })
     return;
   }
-  if (await getUserForEmail(req.body.email)){
-    res.status(409).send({ message: `user with email ${req.body.email} already exists. Use a different email.`});
+  if (await getUserForEmail(req.body.email)) {
+    res.status(409).send({ message: `user with email ${req.body.email} already exists. Use a different email.` });
     return;
   }
 
@@ -112,13 +112,12 @@ exports.update = async (req, res) => {
   }
   let userForEmail = await getUserForEmail(req.body.email)
   let userForId = await getUserForId(id)
-    if (!userForId)
-    {
-      res.status(404).send({message: `user for id ${id} not found.`});
-      return;
-    }
-  if (userForEmail && (JSON.stringify(userForEmail) !== JSON.stringify(userForId))){
-    res.status(409).send({ message: `user with email ${req.body.email} already exists. Use a different email.`});
+  if (!userForId) {
+    res.status(404).send({ message: `user for id ${id} not found.` });
+    return;
+  }
+  if (userForEmail && (JSON.stringify(userForEmail) !== JSON.stringify(userForId))) {
+    res.status(409).send({ message: `user with email ${req.body.email} already exists. Use a different email.` });
     return;
   }
   User.update(req.body, {
@@ -143,14 +142,13 @@ exports.update = async (req, res) => {
 };
 
 // Delete a User with the specified id in the request
-exports.delete = (req, res) => {
+exports.delete = async (req, res) => {
   const id = req.params.id;
   let userForId = await getUserForId(id)
-    if (!userForId)
-    {
-      res.status(404).send({message: `user for id ${id} not found.`});
-      return;
-    }
+  if (!userForId) {
+    res.status(404).send({ message: `user for id ${id} not found.` });
+    return;
+  }
 
   User.destroy({
     where: { id: id },
@@ -189,14 +187,14 @@ async function validateRole(role) {
     return false
   return true;
 }
-async function getUserForEmail(email){
-   return User.findOne({
+async function getUserForEmail(email) {
+  return User.findOne({
     where: {
       email: email,
     },
   });
 }
-async function getUserForId(id){
+async function getUserForId(id) {
   return User.findByPk(id);
 }
 export default exports;
