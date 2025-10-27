@@ -12,8 +12,8 @@ exports.create = async (req, res) => {
     res.status(400).send({ message: attributeError })
     return;
   }
-  if (await getUserForEmail(req.body.email)){
-    res.status(409).send({ message: `user with email ${req.body.email} already exists. Use a different email.`});
+  if (await getUserForEmail(req.body.email)) {
+    res.status(409).send({ message: `user with email ${req.body.email} already exists. Use a different email.` });
     return;
   }
 
@@ -34,9 +34,16 @@ exports.create = async (req, res) => {
       res.send(data);
     })
     .catch((err) => {
-      res.status(500).send({
-        message: err.message || "Some error occurred while creating the User.",
-      });
+      if (err.name === 'SequelizeValidationError') {
+        res.status(400).send({
+          message: err.message
+        })
+      }
+      else {
+        res.status(500).send({
+          message: err.message || "Some error occurred while creating the User.",
+        })
+      };
     });
 };
 
@@ -106,13 +113,9 @@ exports.findByEmail = (req, res) => {
 // Update a User by the id in the request
 exports.update = async (req, res) => {
   const id = req.params.id;
-  if (!validateRole(req.body.role)) {
-    res.status(400).send({ message: invalidRole })
-    return;
-  }
   let userForEmail = await getUserForEmail(req.body.email)
-  if (userForEmail && (JSON.stringify(userForEmail) !== JSON.stringify(await getUserForId(id)))){
-    res.status(409).send({ message: `user with email ${req.body.email} already exists. Use a different email.`});
+  if (userForEmail && (JSON.stringify(userForEmail) !== JSON.stringify(await getUserForId(id)))) {
+    res.status(409).send({ message: `user with email ${req.body.email} already exists. Use a different email.` });
     return;
   }
   User.update(req.body, {
@@ -130,9 +133,16 @@ exports.update = async (req, res) => {
       }
     })
     .catch((err) => {
-      res.status(500).send({
-        message: "Error updating User with id=" + id,
-      });
+      if (err.name === 'SequelizeValidationError') {
+        res.status(400).send({
+          message: err.message
+        })
+      }
+      else {
+        res.status(500).send({
+          message: "Error updating User with id=" + id,
+        })
+      };
     });
 };
 
@@ -168,23 +178,17 @@ function validateAttributes(req) {
     return missingAttr + "lName";
   if (!req.email)
     return missingAttr + "email";
-  if (!validateRole(req.role))
-    return invalidRole
 }
 
-async function validateRole(role) {
-  if (role && !(role === "user" || role === "admin"))
-    return false
-  return true;
-}
-function getUserForEmail(email){
-   return User.findOne({
+
+function getUserForEmail(email) {
+  return User.findOne({
     where: {
       email: email,
     },
   });
 }
-async function getUserForId(id){
+async function getUserForId(id) {
   return User.findByPk(id);
 }
 export default exports;
