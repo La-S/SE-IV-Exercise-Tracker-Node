@@ -1,4 +1,4 @@
-import db  from "../models/index.js";
+import db from "../models/index.js";
 const ExerciseTemplate = db.exerciseTemplate;
 const Op = db.Sequelize.Op;
 const exports: any = {};
@@ -47,11 +47,19 @@ exports.create = (req: pkg.Request, res: pkg.Response) => {
       res.send(data);
     })
     .catch((err: Error) => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while creating the exercise template.",
-      });
+      if (err.name === 'SequelizeValidationError') {
+        res.status(400).send({
+          message: err.message
+        })
+      }
+      else {
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred while creating the exercise template.",
+        })
+      };
     });
+
 };
 
 // Retrieve all Exercise Templates from the database.
@@ -59,10 +67,10 @@ exports.findAll = (req: pkg.Request, res: pkg.Response) => {
   const id = req.query.id;
   var condition = id
     ? {
-        id: {
-          [Op.like]: `%${id}%`,
-        },
-      }
+      id: {
+        [Op.like]: `%${id}%`,
+      },
+    }
     : null;
 
   ExerciseTemplate.findAll({ where: condition })
@@ -111,7 +119,7 @@ exports.update = (req: pkg.Request, res: pkg.Response) => {
   const updatedData = {
     name: req.body.name,
     type: req.body.type ?? undefined,
-    muscle_group: req.body.muscle_group ??  undefined,
+    muscle_group: req.body.muscle_group ?? undefined,
   };
 
   ExerciseTemplate.update(updatedData, {
@@ -129,9 +137,16 @@ exports.update = (req: pkg.Request, res: pkg.Response) => {
       }
     })
     .catch((err: Error) => {
-      res.status(500).send({
-        message: `Error updating exercise template with id ${id}`,
-      });
+      if (err.name === 'SequelizeValidationError') {
+        res.status(400).send({
+          message: err.message
+        })
+      }
+      else {
+        res.status(500).send({
+          message: `Error updating exercise template with id ${id}`,
+        })
+      };
     });
 };
 
