@@ -25,10 +25,17 @@ exports.create = (req, res) => {
             res.send(data);
         })
         .catch((err) => {
-            res.status(500).send({
-                message:
-                    err.message || "Some error occurred while creating the set.",
-            });
+            if (err.name === 'SequelizeValidationError') {
+                res.status(400).send({
+                    message: err.message
+                })
+            }
+            else {
+                res.status(500).send({
+                    message:
+                        err.message || "Some error occurred while creating the set.",
+                });
+            }
         });
 };
 
@@ -78,7 +85,8 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
     const id = req.params.id;
 
-    Set.update(req.body, {
+    let updateInfo = convertToSnake(req.body)
+    Set.update(updateInfo, {
         where: { id: id },
     })
         .then((num) => {
@@ -93,9 +101,16 @@ exports.update = (req, res) => {
             }
         })
         .catch((err) => {
-            res.status(500).send({
-                message: `Error updating set with id ${id}`,
-            });
+            if (err.name === 'SequelizeValidationError') {
+                res.status(400).send({
+                    message: err.message
+                })
+            }
+            else {
+                res.status(500).send({
+                    message: `Error updating set with id ${id}`,
+                });
+            }
         });
 };
 
@@ -135,5 +150,38 @@ exports.findForExercise = (req, res) => {
             throw new Error(`Error getting sets for exercise with id: ${exerciseId}`);
         });
 };
+
+function convertToSnake(req){
+    let updateInfo = {};
+    updateInfo.completed = req.completed;
+    if(req.goalWeight){
+        updateInfo.goal_weight = req.goalWeight;
+    }
+    if(req.actualWeight){
+        updateInfo.actual_weight = req.actualWeight
+    }
+    if(req.goalReps){
+        updateInfo.goal_reps = req.goalReps;
+    }
+    if(req.actualReps){
+        updateInfo.actual_reps = req.actualReps;
+    }
+    if(req.goalDist){
+        updateInfo.goal_dist = req.goalDist;
+    }
+    if(req.actualDist){
+        updateInfo.actual_dist = req.actualDist;
+    }
+    if(req.goalTime){
+        updateInfo.goal_time = req.goalTime;
+    }
+    if(req.actualWeight){
+        updateInfo.actual_time = req.actualTime;
+    }
+    if(req.distUnits){
+        updateInfo.dist_units = req.distUnits;
+    }
+    return updateInfo;
+}
 
 export default exports;
