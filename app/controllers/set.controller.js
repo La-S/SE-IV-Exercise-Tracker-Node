@@ -139,17 +139,18 @@ exports.delete = (req, res) => {
 };
 
 //have valid exerciseId checked in exercise controller?
-exports.findForExercise = (req, res) => {
-    const exerciseId = req.query.exerciseId
+//NOT TESTED
+// exports.findForExercise = (req, res) => {
+//     const exerciseId = req.query.exerciseId
 
-    Set.findAll({ where: { exercise_id: exerciseId } })
-        .then((data) => {
-            return data;
-        })
-        .catch((err) => {
-            throw new Error(`Error getting sets for exercise with id: ${exerciseId}`);
-        });
-};
+//     Set.findAll({ where: { exercise_id: exerciseId } })
+//         .then((data) => {
+//             return data;
+//         })
+//         .catch((err) => {
+//             throw new Error(`Error getting sets for exercise with id: ${exerciseId}`);
+//         });
+// };
 
 function convertToSnake(req){
     let updateInfo = {};
