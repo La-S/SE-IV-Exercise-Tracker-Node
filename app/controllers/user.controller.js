@@ -120,7 +120,8 @@ exports.update = async (req, res) => {
       return;
     }
   }
-  User.update(req.body, {
+  let updateInfo = convertToSnake(req.body);
+  User.update(updateInfo, {
     where: { id: id },
   })
     .then((num) => {
@@ -192,5 +193,22 @@ function getUserForEmail(email) {
 }
 async function getUserForId(id) {
   return User.findByPk(id);
+}
+
+function convertToSnake(req){
+  let updateInfo = {};
+  if(req.email){
+    updateInfo.email = req.email;
+  }
+  if (req.firstName){
+    updateInfo.first_name = req.firstName;
+  }
+  if (req.lastName){
+    updateInfo.last_name = req.lastName;
+  }
+  if (req.role){
+    updateInfo.role = req.role;
+  }
+  return updateInfo;
 }
 export default exports;
