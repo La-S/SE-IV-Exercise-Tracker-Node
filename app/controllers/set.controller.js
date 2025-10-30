@@ -154,36 +154,16 @@ exports.delete = (req, res) => {
 
 function convertToSnake(req) {
     let updateInfo = {};
-    if (req.completed) {
-        updateInfo.completed = req.completed;
-    }
-    if (req.goalWeight) {
-        updateInfo.goal_weight = req.goalWeight;
-    }
-    if (req.actualWeight) {
-        updateInfo.actual_weight = req.actualWeight
-    }
-    if (req.goalReps) {
-        updateInfo.goal_reps = req.goalReps;
-    }
-    if (req.actualReps) {
-        updateInfo.actual_reps = req.actualReps;
-    }
-    if (req.goalDist) {
-        updateInfo.goal_dist = req.goalDist;
-    }
-    if (req.actualDist) {
-        updateInfo.actual_dist = req.actualDist;
-    }
-    if (req.goalTime) {
-        updateInfo.goal_time = req.goalTime;
-    }
-    if (req.actualWeight) {
-        updateInfo.actual_time = req.actualTime;
-    }
-    if (req.distUnits) {
-        updateInfo.dist_units = req.distUnits;
-    }
+    updateInfo.completed = req.completed ?? undefined;
+    updateInfo.goal_weight = req.goalWeight ?? undefined;
+    updateInfo.actual_weight = req.actualWeight ?? undefined;
+    updateInfo.goal_reps = req.goalReps ?? undefined;
+    updateInfo.actual_reps = req.actualReps ?? undefined;
+    updateInfo.goal_dist = req.goalDist ?? undefined;
+    updateInfo.actual_dist = req.actualDist ?? undefined;
+    updateInfo.goal_time = req.goalTime ?? undefined;
+    updateInfo.actual_time = req.actualTime ?? undefined;
+    updateInfo.dist_units = req.distUnits ?? undefined;
     return updateInfo;
 }
 

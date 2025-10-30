@@ -195,20 +195,12 @@ async function getUserForId(id) {
   return User.findByPk(id);
 }
 
-function convertToSnake(req){
+function convertToSnake(req) {
   let updateInfo = {};
-  if(req.email){
-    updateInfo.email = req.email;
-  }
-  if (req.firstName){
-    updateInfo.first_name = req.firstName;
-  }
-  if (req.lastName){
-    updateInfo.last_name = req.lastName;
-  }
-  if (req.role){
-    updateInfo.role = req.role;
-  }
+  updateInfo.email = req.email ?? undefined;
+  updateInfo.first_name = req.firstName ?? undefined;
+  updateInfo.last_name = req.lastName ?? undefined;
+  updateInfo.role = req.role ?? undefined;
   return updateInfo;
 }
 export default exports;
