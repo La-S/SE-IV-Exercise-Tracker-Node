@@ -7,15 +7,7 @@ const exports = {};
 exports.create = (req, res) => {
 
     // Create a workout
-    const workout = {
-        parent_id: req.body.parentId ?? null,
-        user_id: req.body.userId,
-        coach_id: req.body.coachId ?? null,
-        notes: req.body.notes ?? null,
-        expected_date: req.body.expectedDate ?? null,
-        date: req.body.date ?? null,
-        total_time: req.body.totalTime ?? 0
-    };
+    const workout = convertToSnake(req.body);
     // Save workout in the database
     Workout.create(workout)
         .then((data) => {
