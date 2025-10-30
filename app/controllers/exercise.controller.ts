@@ -15,16 +15,16 @@ interface Exercise {
 // Create and Save a new Exercise
 exports.create = (req: pkg.Request, res: pkg.Response) => {
   // Validate request
-  if (req.body!.workout_id == null) {
+  if (req.body!.workoutId == null) {
     res.status(400).send({
-      message: "Content must have a workout_id!",
+      message: "Content must have a workoutId!",
     });
     return;
   }
 
-  if (req.body.exercise_template_id == null) {
+  if (req.body.exerciseTemplateId == null) {
     res.status(400).send({
-      message: "Content must have a exercise_template_id!",
+      message: "Content must have a exerciseTemplateId!",
     });
     return;
   }
@@ -92,7 +92,7 @@ exports.update = (req: pkg.Request, res: pkg.Response) => {
   const id = req.params.id;
 
   // Validate request
-  if (!req.body.workout_id && !req.body.exercise_template_id && !req.body.notes && !req.body.rest_timer) {
+  if (!req.body.workoutId && !req.body.exerciseTemplateId && !req.body.notes && !req.body.restTimer) {
     res.status(400).send({
       message: "Content must have new data to update!",
     });
