@@ -150,8 +150,13 @@ exports.update = async (req, res) => {
 };
 
 // Delete a User with the specified id in the request
-exports.delete = (req, res) => {
+exports.delete = async (req, res) => {
   const id = req.params.id;
+  let userForId = await getUserForId(id)
+  if (!userForId) {
+    res.status(404).send({ message: `user for id ${id} not found.` });
+    return;
+  }
 
   User.destroy({
     where: { id: id },
