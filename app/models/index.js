@@ -7,6 +7,7 @@ import sequelize from "../config/sequelizeInstance.js";
 import User from "./user.model.js";
 import Team from "./team.model.js";
 import Exercise from "./exercise.model.js"
+import ExerciseTemplate from "./exerciseTemplate.model.ts";
 
 
 const db = {};
@@ -16,6 +17,7 @@ db.sequelize = sequelize;
 db.user = User;
 db.team = Team;
 db.exercise = Exercise;
+db.exerciseTemplate = ExerciseTemplate;
 
 // foreign key for session
 // leaving these here as examples for object relations - John
