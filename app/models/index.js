@@ -6,6 +6,7 @@ import sequelize from "../config/sequelizeInstance.js";
 
 import User from "./user.model.js";
 import Team from "./team.model.js";
+import Set from "./set.model.js"
 import ExerciseTemplate from "./exerciseTemplate.model.ts";
 
 
@@ -15,6 +16,7 @@ db.sequelize = sequelize;
 
 db.user = User;
 db.team = Team;
+db.set = Set;
 db.exerciseTemplate = ExerciseTemplate;
 
 // foreign key for session
