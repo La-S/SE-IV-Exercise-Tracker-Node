@@ -7,18 +7,7 @@ const exports = {};
 exports.create = (req, res) => {
 
     // Create a set
-    const set = {
-        completed: req.body.completed ?? false,
-        goal_weight: req.body.goalWeight ?? null,
-        actual_weight: req.body.actualWeight ?? null,
-        goal_reps: req.body.goalReps ?? null,
-        actual_reps: req.body.actualReps ?? null,
-        goal_time: req.body.goalTime ?? null,
-        actual_time: req.body.actualTime ?? null,
-        goal_dist: req.body.goalDist ?? null,
-        actual_dist: req.body.actualDist ?? null,
-        dist_units: req.body.distUnits ?? null
-    };
+    const set = convertToSnake(req.body);
     // Save set in the database
     Set.create(set)
         .then((data) => {
