@@ -30,12 +30,8 @@ exports.create = (req: pkg.Request, res: pkg.Response) => {
   }
 
   // Create an exercise
-  const exercise: Exercise = {
-    workout_id: req.body.workout_id,
-    exercise_template_id: req.body.exercise_template_id,
-    notes: req.body.notes,
-    rest_timer: req.body.rest_timer,
-  };
+  const exercise = convertToSnake(req.body);
+
   // Save exercise in the database
   Exercise.create(exercise)
     .then((data: any) => {
@@ -103,12 +99,7 @@ exports.update = (req: pkg.Request, res: pkg.Response) => {
     return;
   }
 
-  const updatedData: Exercise = {
-    workout_id: req.body.workout_id,
-    exercise_template_id: req.body.exercise_template_id ?? undefined,
-    notes: req.body.notes ?? undefined,
-    rest_timer: req.body.rest_timer ?? undefined,
-  };
+  const updatedData = convertToSnake(req.body);
 
   Exercise.update(updatedData, {
     where: { id: id },
@@ -154,5 +145,15 @@ exports.delete = (req: pkg.Request, res: pkg.Response) => {
       });
     });
 };
+
+function convertToSnake(jsonData: any): Exercise {
+  let exercise: Exercise = {
+    workout_id: jsonData.workoutId,
+    exercise_template_id: jsonData.exerciseTemplateId,
+    notes: jsonData.notes,
+    rest_timer: jsonData.restTimer,
+  };
+  return exercise;
+}
 
 export default exports;
