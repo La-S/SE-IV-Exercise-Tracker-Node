@@ -14,7 +14,6 @@ router.use("/", AuthRoutes);
 router.use("/users", UserRoutes);
 router.use("/team", TeamRoutes);
 router.use("/set", SetRoutes)
-router.use("/team", Team);
 router.use("/exerciseTemplate", ExerciseTemplate);
 
 export default router;
