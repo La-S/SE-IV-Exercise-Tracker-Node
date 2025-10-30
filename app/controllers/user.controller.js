@@ -106,9 +106,8 @@ exports.findByEmail = (req, res) => {
 // Update a User by the id in the request
 exports.update = async (req, res) => {
   const id = req.params.id;
-  let userForEmail = undefined
   if (req.body.email) {
-    userForEmail = await getUserForEmail(req.body.email)
+    let userForEmail = await getUserForEmail(req.body.email)
     if (userForEmail && (JSON.stringify(userForEmail) !== JSON.stringify(await getUserForId(id)))) {
       res.status(409).send({ message: `user with email ${req.body.email} already exists. Use a different email.` });
       return;
