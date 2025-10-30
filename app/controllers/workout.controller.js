@@ -151,16 +151,13 @@ exports.delete = (req, res) => {
 
 function convertToSnake(req) {
     let updateInfo = {};
-    updateInfo.completed = req.completed ?? undefined;
-    updateInfo.goal_weight = req.goalWeight ?? undefined;
-    updateInfo.actual_weight = req.actualWeight ?? undefined;
-    updateInfo.goal_reps = req.goalReps ?? undefined;
-    updateInfo.actual_reps = req.actualReps ?? undefined;
-    updateInfo.goal_dist = req.goalDist ?? undefined;
-    updateInfo.actual_dist = req.actualDist ?? undefined;
-    updateInfo.goal_time = req.goalTime ?? undefined;
-    updateInfo.actual_time = req.actualTime ?? undefined;
-    updateInfo.dist_units = req.distUnits ?? undefined;
+    updateInfo.parent_id = req.parentId ?? undefined;
+    updateInfo.user_id = req.userId ?? undefined;
+    updateInfo.coach_id = req.coachId ?? undefined;
+    updateInfo.notes = req.notes ?? undefined;
+    updateInfo.expected_date = req.expectedDate ?? undefined;
+    updateInfo.date = req.date ?? undefined;
+    updateInfo.total_time = req.totalTime ?? undefined;
     return updateInfo;
 }
 
