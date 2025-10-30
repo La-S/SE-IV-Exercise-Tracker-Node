@@ -1,4 +1,4 @@
-import db  from "../models/index.js";
+import db from "../models/index.js";
 const Team = db.team;
 const Op = db.Sequelize.Op;
 const exports = {};
@@ -35,10 +35,10 @@ exports.findAll = (req, res) => {
   const id = req.query.id;
   var condition = id
     ? {
-        id: {
-          [Op.like]: `%${id}%`,
-        },
-      }
+      id: {
+        [Op.like]: `%${id}%`,
+      },
+    }
     : null;
 
   Team.findAll({ where: condition })

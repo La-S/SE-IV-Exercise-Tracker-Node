@@ -6,6 +6,7 @@ import sequelize from "../config/sequelizeInstance.js";
 
 import User from "./user.model.js";
 import Team from "./team.model.js";
+import Workout from "./workout.model.js"
 import Exercise from "./exercise.model.js"
 import Set from "./set.model.js"
 import ExerciseTemplate from "./exerciseTemplate.model.ts";
@@ -17,6 +18,7 @@ db.sequelize = sequelize;
 
 db.user = User;
 db.team = Team;
+db.workout = Workout;
 db.exercise = Exercise;
 db.set = Set;
 db.exerciseTemplate = ExerciseTemplate;
