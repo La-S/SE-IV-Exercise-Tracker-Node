@@ -5,13 +5,7 @@ const exports = {};
 const missingAttr = "Missing attribute: "
 // Create and Save a new User
 exports.create = async (req, res) => {
-  // Validate request
-  let attributeError = validateAttributes(req.body)
-  if (attributeError) {
-    res.status(400).send({ message: attributeError })
-    return;
-  }
-  if (await getUserForEmail(req.body.email)) {
+  if (req.body.email && await getUserForEmail(req.body.email)) {
     res.status(409).send({ message: `user with email ${req.body.email} already exists. Use a different email.` });
     return;
   }
@@ -173,15 +167,6 @@ exports.delete = (req, res) => {
       });
     });
 };
-
-function validateAttributes(req) {
-  if (!req.firstName)
-    return missingAttr + "firstName";
-  if (!req.lastName)
-    return missingAttr + "lastName";
-  if (!req.email)
-    return missingAttr + "email";
-}
 
 
 function getUserForEmail(email) {
