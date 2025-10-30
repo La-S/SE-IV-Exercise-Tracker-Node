@@ -1,6 +1,5 @@
 import Sequelize from "sequelize";
 import SequelizeInstance from "../config/sequelizeInstance.js";
-import sequelize from "../config/sequelizeInstance.js";
 
 const Workout = SequelizeInstance.define("workout", {
     id: {
