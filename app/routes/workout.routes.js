@@ -1,20 +1,20 @@
-  import workout from "../controllers/workout.controller.js";
-  import { Router } from "express";
-  var router = Router()
+import workout from "../controllers/workout.controller.js";
+import { Router } from "express";
+var router = Router()
 
-  // Create a new set
-  router.post("/", workout.create);
+// Create a new set
+router.post("/", workout.create);
 
-  // Find all the Sets
-  router.get("/", workout.findAll);
+// Find all the Sets
+router.get("/", workout.findAll);
 
-  // Retrieve a single set with id
-  router.get("/:id", workout.findOne);
+// Retrieve a single set with id
+router.get("/:id", workout.findOne);
 
-  // Update a set with id
-  router.put("/:id", workout.update);
+// Update a set with id
+router.put("/:id", workout.update);
 
-  // Delete a set with id
-  router.delete("/:id", workout.delete);
+// Delete a set with id
+router.delete("/:id", workout.delete);
 
 export default router
