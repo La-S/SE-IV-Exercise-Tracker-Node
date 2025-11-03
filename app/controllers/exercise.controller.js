@@ -1,21 +1,12 @@
 import db  from "../models/index.js";
 const Exercise = db.exercise;
 const Op = db.Sequelize.Op;
-const exports: any = {};
-import pkg from 'express';
-
-interface Exercise {
-  id?: number,
-  workout_id: number,
-  exercise_template_id: number,
-  notes: string,
-  rest_timer: number,
-}
+const exports = {};
 
 // Create and Save a new Exercise
-exports.create = (req: pkg.Request, res: pkg.Response) => {
+exports.create = (req, res) => {
   // Validate request
-  if (req.body!.workoutId == null) {
+  if (!req.body.workoutId) {
     res.status(400).send({
       message: "Content must have a workoutId!",
     });
@@ -34,10 +25,10 @@ exports.create = (req: pkg.Request, res: pkg.Response) => {
 
   // Save exercise in the database
   Exercise.create(exercise)
-    .then((data: any) => {
+    .then((data) => {
       res.send(data);
     })
-    .catch((err: Error) => {
+    .catch((err) => {
       res.status(500).send({
         message:
           err.message || "Some error occurred while creating the exercise.",
@@ -46,7 +37,7 @@ exports.create = (req: pkg.Request, res: pkg.Response) => {
 };
 
 // Retrieve all Exercise from the database.
-exports.findAll = (req: pkg.Request, res: pkg.Response) => {
+exports.findAll = (req, res) => {
   const id = req.query.id;
   var condition = id
     ? {
@@ -57,10 +48,10 @@ exports.findAll = (req: pkg.Request, res: pkg.Response) => {
     : null;
 
   Exercise.findAll({ where: condition })
-    .then((data: any) => {
+    .then((data) => {
       res.send(data);
     })
-    .catch((err: Error) => {
+    .catch((err) => {
       res.status(500).send({
         message: err.message || "Some error occurred while retrieving exercises.",
       });
@@ -68,10 +59,10 @@ exports.findAll = (req: pkg.Request, res: pkg.Response) => {
 };
 
 // Find a single exercise with an id
-exports.findOne = (req: pkg.Request, res: pkg.Response) => {
+exports.findOne = (req, res) => {
   const id = req.params.id;
   Exercise.findByPk(id)
-    .then((data: any) => {
+    .then((data) => {
       if (data) {
         res.send(data);
       } else {
@@ -80,7 +71,7 @@ exports.findOne = (req: pkg.Request, res: pkg.Response) => {
         });
       }
     })
-    .catch((err: Error) => {
+    .catch((err) => {
       res.status(500).send({
         message: `Error retrieving exercise with id ${id}`,
       });
@@ -88,7 +79,7 @@ exports.findOne = (req: pkg.Request, res: pkg.Response) => {
 };
 
 // Update a exercise by the id in the request
-exports.update = (req: pkg.Request, res: pkg.Response) => {
+exports.update = (req, res) => {
   const id = req.params.id;
 
   // Validate request
@@ -104,7 +95,7 @@ exports.update = (req: pkg.Request, res: pkg.Response) => {
   Exercise.update(updatedData, {
     where: { id: id },
   })
-    .then((num: number) => {
+    .then((num) => {
       if (num == 1) {
         res.send({
           message: "exercise was updated successfully.",
@@ -115,7 +106,7 @@ exports.update = (req: pkg.Request, res: pkg.Response) => {
         });
       }
     })
-    .catch((err: Error) => {
+    .catch((err) => {
       res.status(500).send({
         message: `Error updating exercise with id ${id}`,
       });
@@ -123,12 +114,12 @@ exports.update = (req: pkg.Request, res: pkg.Response) => {
 };
 
 // Delete a exercise with the specified id in the request
-exports.delete = (req: pkg.Request, res: pkg.Response) => {
+exports.delete = (req, res) => {
   const id = req.params.id;
   Exercise.destroy({
     where: { id: id },
   })
-    .then((num: number) => {
+    .then((num) => {
       if (num == 1) {
         res.send({
           message: "exercise was deleted successfully!",
@@ -139,15 +130,15 @@ exports.delete = (req: pkg.Request, res: pkg.Response) => {
         });
       }
     })
-    .catch((err: Error) => {
+    .catch((err) => {
       res.status(500).send({
         message: `Unknown error deleting exercise with id ${id}`,
       });
     });
 };
 
-function convertToSnake(jsonData: any): Exercise {
-  let exercise: Exercise = {
+function convertToSnake(jsonData) {
+  let exercise= {
     workout_id: jsonData.workoutId,
     exercise_template_id: jsonData.exerciseTemplateId,
     notes: jsonData.notes,
