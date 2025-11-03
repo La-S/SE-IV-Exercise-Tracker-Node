@@ -175,5 +175,22 @@ exports.removeUsers = async (req, res) => {
         message: `Unknown error removing members from the team`,
       });
     });
+};
+
+exports.getUsers = async (req, res) => {
+    const id = req.params.id;
+  const team = await Team.findByPk(id);
+  if (!team) {
+    res.status(404).send({ message: "team not found!" });
+    return;
+  }
+  team.getUsers()
+    .then((data) =>
+      res.status(200).send(data))
+    .catch((err) => {
+      res.status(500).send({
+        message: `Unknown error removing members from the team`,
+      });
+    });
 }
 export default exports;

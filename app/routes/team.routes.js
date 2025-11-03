@@ -21,4 +21,6 @@
   router.post("/:id/users", [authenticate], team.addUsers);
 
   router.delete("/:id/users", [authenticate], team.removeUsers);
+
+  router.get("/:id/users", [authenticate], team.getUsers);
 export default router
