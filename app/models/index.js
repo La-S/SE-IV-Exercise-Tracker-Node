@@ -35,6 +35,7 @@ db.team.belongsToMany(db.user,
 db.exercise.hasMany(db.set,
     { foreignKey: { name: "exercise_id", allowNull: false }, onDelete: "CASCADE" });
 db.set.belongsTo(db.exercise,
+    { as: "exercise" },
     { foreignKey: { name: "exercise_id", allowNull: false }, onDelete: "CASCADE" }
 );
 
@@ -42,6 +43,7 @@ db.set.belongsTo(db.exercise,
 db.exerciseTemplate.hasMany(db.exercise,
     { foreignKey: { name: "exercise_template_id", allowNull: false }, onDelete: "CASCADE" });
 db.exercise.belongsTo(db.exerciseTemplate,
+    { as: "exerciseTemplate" },
     { foreignKey: { name: "exercise_template_id", allowNull: false }, onDelete: "CASCADE" }
 );
 
@@ -49,16 +51,21 @@ db.exercise.belongsTo(db.exerciseTemplate,
 db.workout.hasMany(db.exercise,
     { foreignKey: { name: "workout_id", allowNull: false }, onDelete: "CASCADE" });
 db.exercise.belongsTo(db.workout,
+    { as: "workout" },
     { foreignKey: { name: "workout_id", allowNull: false }, onDelete: "CASCADE" }
 );
 
 //two users are tied to each workout, coach and user. 
-db.user.hasMany(db.workout, { foreignKey: 
-    { name: "user_id", allowNull: false }, onDelete: "CASCADE" });
-db.workout.belongsTo(db.user, { foreignKey: 
-    { name: "user_id", allowNull: false }, onDelete: "CASCADE" });
-db.user.hasMany(db.workout, { foreignKey: "coach_id" });
-db.workout.belongsTo(db.user, { foreignKey: "coach_id" });
+db.user.hasMany(db.workout,
+    { foreignKey: { name: "user_id", allowNull: false }, onDelete: "CASCADE" });
+db.workout.belongsTo(db.user,
+    { as: "user" },
+    { foreignKey: { name: "user_id", allowNull: false }, onDelete: "CASCADE" });
+db.user.hasMany(db.workout,
+    { foreignKey: "coach_id" });
+db.workout.belongsTo(db.user,
+    { as: "coach" },
+    { foreignKey: "coach_id" });
 
 db.sequelize.sync({ force: true });
 export default db;
