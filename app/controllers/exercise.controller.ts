@@ -1,4 +1,4 @@
-import db  from "../models/index.js";
+import db from "../models/index.js";
 const Exercise = db.exercise;
 const Op = db.Sequelize.Op;
 const exports: any = {};
@@ -38,6 +38,12 @@ exports.create = (req: pkg.Request, res: pkg.Response) => {
       res.send(data);
     })
     .catch((err: Error) => {
+      if (err.name === 'SequelizeValidationError' || err.name === "SequelizeForeignKeyConstraintError") {
+        res.status(400).send({
+          message: err.message
+        });
+        return;
+      }
       res.status(500).send({
         message:
           err.message || "Some error occurred while creating the exercise.",
@@ -50,10 +56,10 @@ exports.findAll = (req: pkg.Request, res: pkg.Response) => {
   const id = req.query.id;
   var condition = id
     ? {
-        id: {
-          [Op.like]: `%${id}%`,
-        },
-      }
+      id: {
+        [Op.like]: `%${id}%`,
+      },
+    }
     : null;
 
   Exercise.findAll({ where: condition })

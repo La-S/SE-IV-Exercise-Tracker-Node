@@ -14,18 +14,18 @@ exports.create = (req, res) => {
             res.send(data);
         })
         .catch((err) => {
-            if (err.name === 'SequelizeValidationError') {
+            if (err.name === 'SequelizeValidationError' || err.name === "SequelizeForeignKeyConstraintError") {
                 res.status(400).send({
                     message: err.message
                 })
+                return;
             }
-            else {
-                res.status(500).send({
-                    message:
-                        err.message || "Some error occurred while creating the workout.",
-                });
-            }
-        });
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while creating the workout.",
+            });
+        }
+        );
 };
 
 // Retrieve all workouts from the database.
@@ -90,16 +90,15 @@ exports.update = (req, res) => {
             }
         })
         .catch((err) => {
-            if (err.name === 'SequelizeValidationError') {
+            if (err.name === 'SequelizeValidationError' || err.name === "SequelizeForeignKeyConstraintError") {
                 res.status(400).send({
                     message: err.message
-                })
-            }
-            else {
-                res.status(500).send({
-                    message: `Error updating workout with id ${id}`,
                 });
+                return;
             }
+            res.status(500).send({
+                message: `Error updating workout with id ${id}`,
+            });
         });
 };
 

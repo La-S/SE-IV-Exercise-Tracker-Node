@@ -27,16 +27,15 @@ exports.create = async (req, res) => {
       res.send(data);
     })
     .catch((err) => {
-      if (err.name === 'SequelizeValidationError') {
+      if (err.name === 'SequelizeValidationError' || err.name === "SequelizeForeignKeyConstraintError") {
         res.status(400).send({
           message: err.message
         })
+        return;
       }
-      else {
-        res.status(500).send({
-          message: err.message || "Some error occurred while creating the User.",
-        })
-      };
+      res.status(500).send({
+        message: err.message || "Some error occurred while creating the User.",
+      });
     });
 };
 
@@ -129,16 +128,15 @@ exports.update = async (req, res) => {
       }
     })
     .catch((err) => {
-      if (err.name === 'SequelizeValidationError') {
+      if (err.name === 'SequelizeValidationError' || err.name === "SequelizeForeignKeyConstraintError") {
         res.status(400).send({
           message: err.message
-        })
+        });
+        return;
       }
-      else {
-        res.status(500).send({
-          message: "Error updating User with id=" + id,
-        })
-      };
+      res.status(500).send({
+        message: "Error updating User with id=" + id,
+      });
     });
 };
 

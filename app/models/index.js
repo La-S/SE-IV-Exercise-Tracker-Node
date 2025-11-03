@@ -25,35 +25,30 @@ db.exerciseTemplate = ExerciseTemplate;
 
 //users can be on many teams and teams have many users
 db.user.belongsToMany(db.team,
-    { through: "TeamUser" }
-);
+    { through: "TeamUser" });
 db.team.belongsToMany(db.user,
-    { through: "TeamUser" }
-);
+    { through: "TeamUser" });
 
 //set has many exercises
 db.exercise.hasMany(db.set,
     { foreignKey: { name: "exercise_id", allowNull: false }, onDelete: "CASCADE" });
 db.set.belongsTo(db.exercise,
     { as: "exercise" },
-    { foreignKey: { name: "exercise_id", allowNull: false }, onDelete: "CASCADE" }
-);
+    { foreignKey: { name: "exercise_id", allowNull: false }, onDelete: "CASCADE" });
 
 //an exercise template is used in many exercises
 db.exerciseTemplate.hasMany(db.exercise,
     { foreignKey: { name: "exercise_template_id", allowNull: false }, onDelete: "CASCADE" });
 db.exercise.belongsTo(db.exerciseTemplate,
     { as: "exerciseTemplate" },
-    { foreignKey: { name: "exercise_template_id", allowNull: false }, onDelete: "CASCADE" }
-);
+    { foreignKey: { name: "exercise_template_id", allowNull: false }, onDelete: "CASCADE" });
 
 //a workout has many exercises
 db.workout.hasMany(db.exercise,
     { foreignKey: { name: "workout_id", allowNull: false }, onDelete: "CASCADE" });
 db.exercise.belongsTo(db.workout,
     { as: "workout" },
-    { foreignKey: { name: "workout_id", allowNull: false }, onDelete: "CASCADE" }
-);
+    { foreignKey: { name: "workout_id", allowNull: false }, onDelete: "CASCADE" });
 
 //two users are tied to each workout, coach and user. 
 db.user.hasMany(db.workout,

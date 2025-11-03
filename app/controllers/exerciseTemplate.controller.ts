@@ -47,17 +47,16 @@ exports.create = (req: pkg.Request, res: pkg.Response) => {
       res.send(data);
     })
     .catch((err: Error) => {
-      if (err.name === 'SequelizeValidationError') {
+      if (err.name === 'SequelizeValidationError' || err.name === "SequelizeForeignKeyConstraintError") {
         res.status(400).send({
           message: err.message
-        })
+        });
+        return;
       }
-      else {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while creating the exercise template.",
-        })
-      };
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while creating the exercise template.",
+      });
     });
 
 };
@@ -105,7 +104,7 @@ exports.findOne = (req: pkg.Request, res: pkg.Response) => {
 };
 
 // Update a exerciseTemplate by the id in the request
-exports.update = async (req: pkg.Request, res: pkg.Response) =>  {
+exports.update = async (req: pkg.Request, res: pkg.Response) => {
   const id = req.params.id;
   let data = await ExerciseTemplate.findByPk(id);
 
@@ -118,7 +117,7 @@ exports.update = async (req: pkg.Request, res: pkg.Response) =>  {
   }
 
   if (req.body.type === "strength" || (!req.body.type && data.type == "strength")) {
-    if(!req.body.muscle_group) {
+    if (!req.body.muscle_group) {
       res.status(400).send({
         message: "exercise type strength must have a muscle_group!",
       });
@@ -147,7 +146,7 @@ exports.update = async (req: pkg.Request, res: pkg.Response) =>  {
       }
     })
     .catch((err: Error) => {
-      if (err.name === 'SequelizeValidationError') {
+      if (err.name === 'SequelizeValidationError' || err.name === "SequelizeForeignKeyConstraintError") {
         res.status(400).send({
           message: err.message
         })
