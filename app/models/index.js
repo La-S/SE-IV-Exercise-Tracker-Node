@@ -23,6 +23,40 @@ db.exercise = Exercise;
 db.set = Set;
 db.exerciseTemplate = ExerciseTemplate;
 
+//users can be on many teams and teams have many users
+db.user.belongsToMany(db.team,
+    { through: "TeamUser" }
+);
+db.team.belongsToMany(db.user,
+    { through: "TeamUser" }
+);
+
+//set has many exercises
+db.exercise.hasMany(db.set, { foreignKey: "exercise_id" })
+db.set.belongsTo(db.exercise,
+    { foreignKey: { name: "exercise_id", allowNull: false } }
+);
+
+//an exercise template is used in many exercises
+db.exerciseTemplate.hasMany(db.exercise, { foreignKey: "exercise_template_id" });
+db.exercise.belongsTo(db.exerciseTemplate,
+    { foreignKey: { name: "exercise_template_id", allowNull: false } }
+);
+
+//a workout has many exercises
+db.workout.hasMany(db.exercise, { foreignKey: "workout_id" });
+db.exercise.belongsTo(db.workout,
+    { foreignKey: { name: "workout_id", allowNull: false } }
+);
+
+//two users are tied to each workout, coach and user. 
+db.user.hasMany(db.workout, { foreignKey: "user_id" });
+db.workout.belongsTo(db.user, { foreignKey: { name: "user_id", allowNull: false } });
+db.user.hasMany(db.workout, { foreignKey: "coach_id" });
+db.workout.belongsTo(db.user, { foreignKey: "coach_id" });
+
+
+
 // foreign key for session
 // leaving these here as examples for object relations - John
 // db.user.hasMany(
@@ -63,5 +97,5 @@ db.exerciseTemplate = ExerciseTemplate;
 //   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
 // );
 
-db.sequelize.sync();
+db.sequelize.sync({ force: true });
 export default db;
