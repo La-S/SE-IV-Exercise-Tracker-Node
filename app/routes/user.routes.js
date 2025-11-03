@@ -20,6 +20,5 @@
   // Delete a User with id
   router.delete("/:id", [authenticate], users.delete);
 
-
   export default router;
 

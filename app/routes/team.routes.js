@@ -18,4 +18,7 @@
   // Delete a Team with id
   router.delete("/:id", [authenticate], team.delete);
 
+  router.post("/:id/users", [authenticate], team.addUsers);
+
+  router.delete("/:id/users", [authenticate], team.removeUsers);
 export default router
