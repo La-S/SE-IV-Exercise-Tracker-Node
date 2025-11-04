@@ -1,4 +1,4 @@
-  import exerciseTemplate from "../controllers/exerciseTemplate.controller.ts";
+  import exerciseTemplate from "../controllers/exerciseTemplate.controller.js";
   import  authenticate from "../authorization/authorization.js";
   import { Router } from "express";
   var router = Router()

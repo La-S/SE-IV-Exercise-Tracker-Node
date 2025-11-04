@@ -9,7 +9,7 @@ import Team from "./team.model.js";
 import Workout from "./workout.model.js"
 import Exercise from "./exercise.model.js"
 import Set from "./set.model.js"
-import ExerciseTemplate from "./exerciseTemplate.model.ts";
+import ExerciseTemplate from "./exerciseTemplate.model.js";
 
 
 const db = {};
