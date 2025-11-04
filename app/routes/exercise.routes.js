@@ -1,4 +1,4 @@
-  import exercise from "../controllers/exercise.controller.ts";
+  import exercise from "../controllers/exercise.controller.js";
   import  authenticate from "../authorization/authorization.js";
   import { Router } from "express";
   var router = Router()
