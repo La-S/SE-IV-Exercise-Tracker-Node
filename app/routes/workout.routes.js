@@ -19,6 +19,6 @@ router.delete("/:id", workout.delete);
 
 router.get("/:id/exercises", workout.getExercises);
 
-router.get("users/:id", workout.getWorkoutsForUser);
+router.get("/user/:id", workout.getWorkoutsForUser);
 
 export default router
