@@ -1,6 +1,7 @@
 import db from "../models/index.js";
 const Workout = db.workout;
 const Op = db.Sequelize.Op;
+const User = db.user;
 const exports = {};
 
 // Create and Save a new workout
@@ -139,6 +140,27 @@ exports.getExercises = async (req, res) => {
         .catch((err) => {
             res.status(500).send({
                 message: `Unknown error getting exercises`,
+            });
+        });
+};
+
+
+exports.getWorkoutsForUser = (req, res) => {
+    const userId = req.params.id;
+    const user = User.findByPk(userId);
+    if (!user) {
+        res.status(404).send({
+            message: "user not found"
+        })
+        return;
+    }
+    Workout.findAll({ where: { user_id: userId } })
+        .then((data) => {
+            res.send(data);
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: err.message || "Some error occurred while retrieving workouts.",
             });
         });
 }

@@ -15,6 +15,6 @@ const Team = SequelizeInstance.define("exercise", {
     type: Sequelize.INTEGER,
     allowNull: true,
   }
-  });
+});
 
 export default Team;

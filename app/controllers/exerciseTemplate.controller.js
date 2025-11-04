@@ -98,7 +98,7 @@ exports.findOne = (req, res) => {
 };
 
 // Update a exerciseTemplate by the id in the request
-exports.update = async (req, res) =>  {
+exports.update = async (req, res) => {
   const id = req.params.id;
   let data = await ExerciseTemplate.findByPk(id);
 

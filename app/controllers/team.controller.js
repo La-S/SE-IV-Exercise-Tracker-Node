@@ -147,8 +147,8 @@ exports.addUsers = async (req, res) => {
         message: "Users added"
       }))
     .catch((err) => {
-      if (err.name === "SequelizeUniqueConstraintError"){
-        res.status(409).send({message: "one or more users is already on this team. They cannot be added again."})
+      if (err.name === "SequelizeUniqueConstraintError") {
+        res.status(409).send({ message: "one or more users is already on this team. They cannot be added again." })
         return;
       }
       res.status(500).send({
@@ -178,7 +178,7 @@ exports.removeUsers = async (req, res) => {
 };
 
 exports.getUsers = async (req, res) => {
-    const id = req.params.id;
+  const id = req.params.id;
   const team = await Team.findByPk(id);
   if (!team) {
     res.status(404).send({ message: "team not found!" });
