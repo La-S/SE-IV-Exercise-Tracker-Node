@@ -151,6 +151,7 @@ function convertToSnake(req) {
     updateInfo.goal_time = req.goalTime ?? undefined;
     updateInfo.actual_time = req.actualTime ?? undefined;
     updateInfo.dist_units = req.distUnits ?? undefined;
+    updateInfo.exercise_id = req.exerciseId;
     return updateInfo;
 }
 
