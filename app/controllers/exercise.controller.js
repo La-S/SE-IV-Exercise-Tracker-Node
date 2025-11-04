@@ -137,6 +137,24 @@ exports.delete = (req, res) => {
     });
 };
 
+exports.getSets = async (req, res) => {
+    const id = req.params.id;
+    const exercise = await Exercise.findByPk(id);
+    if (!exercise) {
+        res.status(404).send({ message: "exercise not found!" });
+        return;
+    }
+    exercise.getSets()
+        .then((data) =>
+            res.status(200).send(data))
+        .catch((err) => {
+            res.status(500).send({
+                message: `Unknown error getting sets`,
+            });
+        });
+}
+
+
 function convertToSnake(jsonData) {
   let exercise= {
     workout_id: jsonData.workoutId,

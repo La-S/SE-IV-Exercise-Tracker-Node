@@ -126,19 +126,22 @@ exports.delete = (req, res) => {
         });
 };
 
-//have valid exerciseId checked in exercise controller?
-//NOT TESTED
-// exports.findForExercise = (req, res) => {
-//     const exerciseId = req.query.exerciseId
-
-//     Workout.findAll({ where: { exercise_id: exerciseId } })
-//         .then((data) => {
-//             return data;
-//         })
-//         .catch((err) => {
-//             throw new Error(`Error getting workouts for exercise with id: ${exerciseId}`);
-//         });
-// };
+exports.getExercises = async (req, res) => {
+    const id = req.params.id;
+    const workout = await Workout.findByPk(id);
+    if (!workout) {
+        res.status(404).send({ message: "workout not found!" });
+        return;
+    }
+    workout.getExercises()
+        .then((data) =>
+            res.status(200).send(data))
+        .catch((err) => {
+            res.status(500).send({
+                message: `Unknown error getting exercises`,
+            });
+        });
+}
 
 function convertToSnake(req) {
     let updateInfo = {};

@@ -20,6 +20,7 @@
   // Delete a User with id
   router.delete("/:id", [authenticate], exercise.delete);
 
+  router.get(":id/sets", exercise.getSets);
 
   export default router;
 
