@@ -57,5 +57,5 @@ db.user.hasMany(db.workout,
 db.workout.belongsTo(db.user,
     { foreignKey: "coach_id" });
 
-db.sequelize.sync({ force: true });
+db.sequelize.sync();
 export default db;
