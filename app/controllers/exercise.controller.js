@@ -1,5 +1,6 @@
-import db  from "../models/index.js";
+import db from "../models/index.js";
 const Exercise = db.exercise;
+const exerciseTemplate = db.exerciseTemplate
 const Op = db.Sequelize.Op;
 const exports = {};
 
@@ -41,13 +42,13 @@ exports.findAll = (req, res) => {
   const id = req.query.id;
   var condition = id
     ? {
-        id: {
-          [Op.like]: `%${id}%`,
-        },
-      }
+      id: {
+        [Op.like]: `%${id}%`,
+      },
+    }
     : null;
 
-  Exercise.findAll({ where: condition })
+  Exercise.findAll({ where: condition, include: exerciseTemplate })
     .then((data) => {
       res.send(data);
     })
@@ -61,7 +62,7 @@ exports.findAll = (req, res) => {
 // Find a single exercise with an id
 exports.findOne = (req, res) => {
   const id = req.params.id;
-  Exercise.findByPk(id)
+  Exercise.findOne({ where: { id }, include: exerciseTemplate })
     .then((data) => {
       if (data) {
         res.send(data);
@@ -137,8 +138,26 @@ exports.delete = (req, res) => {
     });
 };
 
+exports.getSets = async (req, res) => {
+  const id = req.params.id;
+  const exercise = await Exercise.findByPk(id);
+  if (!exercise) {
+    res.status(404).send({ message: "exercise not found!" });
+    return;
+  }
+  exercise.getSets()
+    .then((data) =>
+      res.status(200).send(data))
+    .catch((err) => {
+      res.status(500).send({
+        message: `Unknown error getting sets`,
+      });
+    });
+}
+
+
 function convertToSnake(jsonData) {
-  let exercise= {
+  let exercise = {
     workout_id: jsonData.workoutId,
     exercise_template_id: jsonData.exerciseTemplateId,
     notes: jsonData.notes,

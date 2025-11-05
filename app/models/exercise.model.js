@@ -7,14 +7,6 @@ const Team = SequelizeInstance.define("exercise", {
     autoIncrement: true,
     primaryKey: true,
   },
-  workout_id: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-  },
-  exercise_template_id: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-  },
   notes: {
     type: Sequelize.STRING(5000),
     allowNull: true,
@@ -23,6 +15,6 @@ const Team = SequelizeInstance.define("exercise", {
     type: Sequelize.INTEGER,
     allowNull: true,
   }
-  });
+});
 
 export default Team;

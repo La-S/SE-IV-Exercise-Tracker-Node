@@ -23,45 +23,39 @@ db.exercise = Exercise;
 db.set = Set;
 db.exerciseTemplate = ExerciseTemplate;
 
-// foreign key for session
-// leaving these here as examples for object relations - John
-// db.user.hasMany(
-//   db.session,
-//   { as: "session" },
-//   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
-// );
-// db.session.belongsTo(
-//   db.user,
-//   { as: "user" },
-//   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
-// );
+//users can be on many teams and teams have many users
+db.user.belongsToMany(db.team,
+    { through: "TeamUser" });
+db.team.belongsToMany(db.user,
+    { through: "TeamUser" });
 
-// foreign key for teams
-// db.team.hasMany
+//set has many exercises
+db.exercise.hasMany(db.set,
+    { foreignKey: { name: "exercise_id", allowNull: false }, onDelete: "CASCADE" });
+db.set.belongsTo(db.exercise,
+    { foreignKey: { name: "exercise_id", allowNull: false }, onDelete: "CASCADE" });
 
-// // foreign key for tutorials
-// db.user.hasMany(
-//   db.tutorial,
-//   { as: "tutorial" },
-//   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
-// );
-// db.tutorial.belongsTo(
-//   db.user,
-//   { as: "user" },
-//   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
-// );
+//an exercise template is used in many exercises
+db.exerciseTemplate.hasMany(db.exercise,
+    { foreignKey: { name: "exercise_template_id", allowNull: false }, onDelete: "CASCADE" });
+db.exercise.belongsTo(db.exerciseTemplate,
+    { foreignKey: { name: "exercise_template_id", allowNull: false }, onDelete: "CASCADE" });
 
-// // foreign key for lessons
-// db.tutorial.hasMany(
-//   db.lesson,
-//   { as: "lesson" },
-//   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
-// );
-// db.lesson.belongsTo(
-//   db.tutorial,
-//   { as: "tutorial" },
-//   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
-// );
+//a workout has many exercises
+db.workout.hasMany(db.exercise,
+    { foreignKey: { name: "workout_id", allowNull: false }, onDelete: "CASCADE" });
+db.exercise.belongsTo(db.workout,
+    { foreignKey: { name: "workout_id", allowNull: false }, onDelete: "CASCADE" });
 
-db.sequelize.sync();
+//two users are tied to each workout, coach and user. 
+db.user.hasMany(db.workout,
+    { foreignKey: { name: "user_id", allowNull: false }, onDelete: "CASCADE" });
+db.workout.belongsTo(db.user,
+    { foreignKey: { name: "user_id", allowNull: false }, onDelete: "CASCADE" });
+db.user.hasMany(db.workout,
+    { foreignKey: "coach_id" });
+db.workout.belongsTo(db.user,
+    { foreignKey: "coach_id" });
+
+db.sequelize.sync({ force: true });
 export default db;

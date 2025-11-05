@@ -44,14 +44,13 @@ exports.create = (req, res) => {
       if (err.name === 'SequelizeValidationError') {
         res.status(400).send({
           message: err.message
-        })
+        });
+        return;
       }
-      else {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while creating the exercise template.",
-        })
-      };
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while creating the exercise template.",
+      });
     });
 
 };
@@ -99,7 +98,7 @@ exports.findOne = (req, res) => {
 };
 
 // Update a exerciseTemplate by the id in the request
-exports.update = async (req, res) =>  {
+exports.update = async (req, res) => {
   const id = req.params.id;
   let data = await ExerciseTemplate.findByPk(id);
 
@@ -112,7 +111,7 @@ exports.update = async (req, res) =>  {
   }
 
   if (req.body.type === "strength" || (!req.body.type && data.type == "strength")) {
-    if(!req.body.muscle_group) {
+    if (!req.body.muscle_group) {
       res.status(400).send({
         message: "exercise type strength must have a muscle_group!",
       });

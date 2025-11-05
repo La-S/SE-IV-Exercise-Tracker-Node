@@ -8,8 +8,8 @@ const Team = SequelizeInstance.define("team", {
     primaryKey: true,
   },
   name: {
-      type: Sequelize.STRING(128),
-    }
-  });
+    type: Sequelize.STRING(128),
+  }
+});
 
 export default Team;

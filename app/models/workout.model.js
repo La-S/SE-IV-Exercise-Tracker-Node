@@ -10,13 +10,6 @@ const Workout = SequelizeInstance.define("workout", {
     parent_id: {
         type: Sequelize.INTEGER
     },
-    user_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false
-    },
-    coach_id: {
-        type: Sequelize.INTEGER
-    },
     notes: {
         type: Sequelize.STRING(500)
     },

@@ -14,17 +14,16 @@ exports.create = (req, res) => {
             res.send(data);
         })
         .catch((err) => {
-            if (err.name === 'SequelizeValidationError') {
+            if (err.name === 'SequelizeValidationError' || err.name === "SequelizeForeignKeyConstraintError") {
                 res.status(400).send({
                     message: err.message
-                })
-            }
-            else {
-                res.status(500).send({
-                    message:
-                        err.message || "Some error occurred while creating the set.",
                 });
+                return;
             }
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while creating the set.",
+            });
         });
 };
 
@@ -90,16 +89,15 @@ exports.update = (req, res) => {
             }
         })
         .catch((err) => {
-            if (err.name === 'SequelizeValidationError') {
+            if (err.name === 'SequelizeValidationError' || err.name === "SequelizeForeignKeyConstraintError") {
                 res.status(400).send({
                     message: err.message
-                })
-            }
-            else {
-                res.status(500).send({
-                    message: `Error updating set with id ${id}`,
                 });
+                return;
             }
+            res.status(500).send({
+                message: `Error updating set with id ${id}`,
+            });
         });
 };
 
@@ -153,6 +151,7 @@ function convertToSnake(req) {
     updateInfo.goal_time = req.goalTime ?? undefined;
     updateInfo.actual_time = req.actualTime ?? undefined;
     updateInfo.dist_units = req.distUnits ?? undefined;
+    updateInfo.exercise_id = req.exerciseId;
     return updateInfo;
 }
 

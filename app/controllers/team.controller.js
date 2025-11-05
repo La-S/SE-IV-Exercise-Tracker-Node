@@ -1,4 +1,5 @@
 import db from "../models/index.js";
+const User = db.user;
 const Team = db.team;
 const Op = db.Sequelize.Op;
 const exports = {};
@@ -132,4 +133,64 @@ exports.delete = (req, res) => {
     });
 };
 
+exports.addUsers = async (req, res) => {
+  const id = req.params.id;
+  const team = await Team.findByPk(id);
+  if (!team) {
+    res.status(404).send({ message: "team not found!" });
+    return;
+  }
+  const users = req.body.userIds;
+  team.addUsers(users)
+    .then(() =>
+      res.status(200).send({
+        message: "Users added"
+      }))
+    .catch((err) => {
+      if (err.name === "SequelizeUniqueConstraintError") {
+        res.status(409).send({ message: "one or more users is already on this team. They cannot be added again." })
+        return;
+      }
+      res.status(500).send({
+        message: `Unknown error adding members to team`,
+      });
+    });
+}
+
+exports.removeUsers = async (req, res) => {
+  const id = req.params.id;
+  const team = await Team.findByPk(id);
+  if (!team) {
+    res.status(404).send({ message: "team not found!" });
+    return;
+  }
+  const users = req.body.userIds;
+  team.removeUsers(users)
+    .then(() =>
+      res.status(200).send({
+        message: "Users removed"
+      }))
+    .catch((err) => {
+      res.status(500).send({
+        message: `Unknown error removing members from the team`,
+      });
+    });
+};
+
+exports.getUsers = async (req, res) => {
+  const id = req.params.id;
+  const team = await Team.findByPk(id);
+  if (!team) {
+    res.status(404).send({ message: "team not found!" });
+    return;
+  }
+  team.getUsers()
+    .then((data) =>
+      res.status(200).send(data))
+    .catch((err) => {
+      res.status(500).send({
+        message: `Unknown error getting users for a team`,
+      });
+    });
+}
 export default exports;

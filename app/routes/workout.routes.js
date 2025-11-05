@@ -17,4 +17,8 @@ router.put("/:id", workout.update);
 // Delete a set with id
 router.delete("/:id", workout.delete);
 
+router.get("/:id/exercises", workout.getExercises);
+
+router.get("/user/:id", workout.getWorkoutsForUser);
+
 export default router

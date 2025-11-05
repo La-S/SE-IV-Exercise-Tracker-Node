@@ -1,6 +1,8 @@
 import db from "../models/index.js";
 const Workout = db.workout;
+const exerciseTemplate = db.exerciseTemplate;
 const Op = db.Sequelize.Op;
+const User = db.user;
 const exports = {};
 
 // Create and Save a new workout
@@ -14,18 +16,18 @@ exports.create = (req, res) => {
             res.send(data);
         })
         .catch((err) => {
-            if (err.name === 'SequelizeValidationError') {
+            if (err.name === 'SequelizeValidationError' || err.name === "SequelizeForeignKeyConstraintError") {
                 res.status(400).send({
                     message: err.message
                 })
+                return;
             }
-            else {
-                res.status(500).send({
-                    message:
-                        err.message || "Some error occurred while creating the workout.",
-                });
-            }
-        });
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while creating the workout.",
+            });
+        }
+        );
 };
 
 // Retrieve all workouts from the database.
@@ -90,16 +92,15 @@ exports.update = (req, res) => {
             }
         })
         .catch((err) => {
-            if (err.name === 'SequelizeValidationError') {
+            if (err.name === 'SequelizeValidationError' || err.name === "SequelizeForeignKeyConstraintError") {
                 res.status(400).send({
                     message: err.message
-                })
-            }
-            else {
-                res.status(500).send({
-                    message: `Error updating workout with id ${id}`,
                 });
+                return;
             }
+            res.status(500).send({
+                message: `Error updating workout with id ${id}`,
+            });
         });
 };
 
@@ -127,19 +128,43 @@ exports.delete = (req, res) => {
         });
 };
 
-//have valid exerciseId checked in exercise controller?
-//NOT TESTED
-// exports.findForExercise = (req, res) => {
-//     const exerciseId = req.query.exerciseId
+exports.getExercises = async (req, res) => {
+    const id = req.params.id;
+    const workout = await Workout.findByPk(id);
+    if (!workout) {
+        res.status(404).send({ message: "workout not found!" });
+        return;
+    }
+    workout.getExercises({ include: exerciseTemplate })
+        .then((data) =>
+            res.status(200).send(data))
+        .catch((err) => {
+            res.status(500).send({
+                message: `Unknown error getting exercises`,
+            });
+        });
+};
 
-//     Workout.findAll({ where: { exercise_id: exerciseId } })
-//         .then((data) => {
-//             return data;
-//         })
-//         .catch((err) => {
-//             throw new Error(`Error getting workouts for exercise with id: ${exerciseId}`);
-//         });
-// };
+
+exports.getWorkoutsForUser = (req, res) => {
+    const userId = req.params.id;
+    const user = User.findByPk(userId);
+    if (!user) {
+        res.status(404).send({
+            message: "user not found"
+        })
+        return;
+    }
+    Workout.findAll({ where: { user_id: userId } })
+        .then((data) => {
+            res.send(data);
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: err.message || "Some error occurred while retrieving workouts.",
+            });
+        });
+}
 
 function convertToSnake(req) {
     let updateInfo = {};
