@@ -135,7 +135,7 @@ exports.getExercises = async (req, res) => {
         res.status(404).send({ message: "workout not found!" });
         return;
     }
-    workout.getExercises({include: exerciseTemplate})
+    workout.getExercises({ include: exerciseTemplate })
         .then((data) =>
             res.status(200).send(data))
         .catch((err) => {

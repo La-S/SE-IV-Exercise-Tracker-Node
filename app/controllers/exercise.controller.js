@@ -62,7 +62,7 @@ exports.findAll = (req, res) => {
 // Find a single exercise with an id
 exports.findOne = (req, res) => {
   const id = req.params.id;
-  Exercise.findOne({ where: {id}, include: exerciseTemplate})
+  Exercise.findOne({ where: { id }, include: exerciseTemplate })
     .then((data) => {
       if (data) {
         res.send(data);
