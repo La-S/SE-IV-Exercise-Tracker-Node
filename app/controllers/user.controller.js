@@ -170,6 +170,23 @@ exports.delete = async (req, res) => {
     });
 };
 
+exports.getTeams = async (req, res) => {
+  const id = req.params.id;
+  const user = await User.findByPk(id);
+  if (!user) {
+    res.status(404).send({ message: "user not found!" });
+    return;
+  }
+  user.getTeams()
+    .then((data) =>
+      res.status(200).send(data))
+    .catch((err) => {
+      res.status(500).send({
+        message: `Unknown error getting teams`,
+      });
+    });
+}
+
 
 function getUserForEmail(email) {
   return User.findOne({

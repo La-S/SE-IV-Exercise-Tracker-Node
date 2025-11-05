@@ -189,7 +189,7 @@ exports.getUsers = async (req, res) => {
       res.status(200).send(data))
     .catch((err) => {
       res.status(500).send({
-        message: `Unknown error removing members from the team`,
+        message: `Unknown error getting users for a team`,
       });
     });
 }

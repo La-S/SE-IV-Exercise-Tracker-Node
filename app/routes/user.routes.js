@@ -20,5 +20,8 @@ router.put("/:id", [authenticate], users.update);
 // Delete a User with id
 router.delete("/:id", [authenticate], users.delete);
 
+//Get teams for user
+router.get("/:id/teams", [authenticate], users.getTeams);
+
 export default router;
 
