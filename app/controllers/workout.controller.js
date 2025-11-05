@@ -1,5 +1,6 @@
 import db from "../models/index.js";
 const Workout = db.workout;
+const exerciseTemplate = db.exerciseTemplate;
 const Op = db.Sequelize.Op;
 const User = db.user;
 const exports = {};
@@ -134,7 +135,7 @@ exports.getExercises = async (req, res) => {
         res.status(404).send({ message: "workout not found!" });
         return;
     }
-    workout.getExercises()
+    workout.getExercises({include: exerciseTemplate})
         .then((data) =>
             res.status(200).send(data))
         .catch((err) => {
