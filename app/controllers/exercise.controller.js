@@ -1,5 +1,6 @@
 import db from "../models/index.js";
 const Exercise = db.exercise;
+const exerciseTemplate = db.exerciseTemplate
 const Op = db.Sequelize.Op;
 const exports = {};
 
@@ -47,7 +48,7 @@ exports.findAll = (req, res) => {
     }
     : null;
 
-  Exercise.findAll({ where: condition })
+  Exercise.findAll({ where: condition, include: exerciseTemplate })
     .then((data) => {
       res.send(data);
     })
@@ -61,7 +62,7 @@ exports.findAll = (req, res) => {
 // Find a single exercise with an id
 exports.findOne = (req, res) => {
   const id = req.params.id;
-  Exercise.findByPk(id)
+  Exercise.findOne({ where: {id}, include: exerciseTemplate})
     .then((data) => {
       if (data) {
         res.send(data);
