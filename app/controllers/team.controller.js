@@ -192,5 +192,22 @@ exports.getUsers = async (req, res) => {
         message: `Unknown error getting users for a team`,
       });
     });
-}
+};
+
+Team.getWorkoutsDated = async (req, res) => {
+  const id = req.params.id;
+  const startDate = req.body.startDate;
+  const endDate = req.body.endDate
+  const team = await Team.findByPk(id);
+  if (!team) {
+    res.status(404).send({ message: "team not found!" });
+    return;
+  }
+  let users = team.getUsers();
+  let workouts = []
+  users.array.forEach(user => {
+    workouts.push(user.getWorkouts({where:{ expected_date: { [Op.between]: [startDate, endDate] }} }))
+  });
+  res.status(400).send(workouts);
+};
 export default exports;
