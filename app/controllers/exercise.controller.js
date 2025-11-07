@@ -153,6 +153,25 @@ exports.getSets = async (req, res) => {
         message: `Unknown error getting sets`,
       });
     });
+};
+
+exports.createMany = (req, res) => {
+  let workoutId = req.params.id;
+  let exercises = req.body;
+  let savedExercises = [];
+  for (const exercise of exercises) {
+    exercise = convertToSnake(exercise);
+    exercise.workout_id = workoutId;
+    try {
+      savedExercises.push(Exercise.create(exercise));
+    }
+    catch (err) {
+      res.status(500).send("Something went wrong bulk uploading exercises");
+      return;
+    }
+  }
+  res.status(200).send(savedExercises);
+
 }
 
 
