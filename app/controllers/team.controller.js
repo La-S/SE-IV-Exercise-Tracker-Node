@@ -1,6 +1,7 @@
 import db from "../models/index.js";
 const User = db.user;
 const Team = db.team;
+const Workout = db.workout;
 const Op = db.Sequelize.Op;
 const exports = {};
 
@@ -194,20 +195,36 @@ exports.getUsers = async (req, res) => {
     });
 };
 
-Team.getWorkoutsDated = async (req, res) => {
+exports.getWorkoutsDated = async (req, res) => {
   const id = req.params.id;
   const startDate = req.body.startDate;
-  const endDate = req.body.endDate
+  const endDate = req.body.endDate;
   const team = await Team.findByPk(id);
   if (!team) {
     res.status(404).send({ message: "team not found!" });
     return;
   }
-  let users = team.getUsers();
-  let workouts = []
-  users.array.forEach(user => {
-    workouts.push(user.getWorkouts({where:{ expected_date: { [Op.between]: [startDate, endDate] }} }))
-  });
-  res.status(400).send(workouts);
+  let users = await team.getUsers();
+  let workouts = [];
+  console.log("before")
+  for (const user of users){
+    let userId = user.dataValues.id;
+    let workoutData = await Workout.findAll({ where: { user_id: userId, expected_date: { [Op.between]: [startDate, endDate] } } });
+    workouts.push(workoutData);
+  }
+  // await users.forEach(async user => {
+  //   let id = user.dataValues.id;
+  //   let workoutData = await Workout.findAll();
+  //   // console.log(workoutData);
+  //   console.log("during")
+  //   workouts.push(workoutData);
+    // .catch((err) => {
+    //     res.status(500).send({
+    //         message: err.message || "Some error occurred while retrieving workouts.",
+    //     });
+    // });  
+  // });
+  console.log("after")
+  res.status(200).send(workouts);
 };
 export default exports;

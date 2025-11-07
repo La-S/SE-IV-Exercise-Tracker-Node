@@ -166,7 +166,7 @@ exports.getWorkoutsForUser = (req, res) => {
         });
 }
 
-exports.findAllDated = (req, res) => {
+exports.getUserWorkoutsDated = (req, res) => {
     let startDate = req.body.startDate;
     let endDate = req.body.endDate;
     let userId = req.params.id;

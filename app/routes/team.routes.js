@@ -23,4 +23,7 @@ router.post("/:id/users", [authenticate], team.addUsers);
 router.delete("/:id/users", [authenticate], team.removeUsers);
 
 router.get("/:id/users", [authenticate], team.getUsers);
+
+router.get("/:id/workouts/dated", [authenticate], team.getWorkoutsDated);
+
 export default router
