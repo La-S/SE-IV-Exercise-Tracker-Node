@@ -17,6 +17,6 @@ router.put("/:id", set.update);
 // Delete a set with id
 router.delete("/:id", set.delete);
 
-router.post("/exercise", set.createMany);
+router.post("/exercise/:id", set.createMany);
 
 export default router

@@ -22,7 +22,7 @@ router.delete("/:id", [authenticate], exercise.delete);
 
 router.get("/:id/sets", exercise.getSets);
 
-router.post("/workout/id", exercise.createMany);
+router.post("/workout/:id", exercise.createMany);
 
 export default router;
 
