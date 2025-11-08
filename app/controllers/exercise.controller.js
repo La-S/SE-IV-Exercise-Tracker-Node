@@ -155,18 +155,18 @@ exports.getSets = async (req, res) => {
     });
 };
 
-exports.createMany = (req, res) => {
+exports.createMany = async (req, res) => {
   let workoutId = req.params.id;
   let exercises = req.body;
   let savedExercises = [];
-  for (const exercise of exercises) {
+  for (let exercise of exercises) {
     exercise = convertToSnake(exercise);
     exercise.workout_id = workoutId;
     try {
-      savedExercises.push(Exercise.create(exercise));
+      savedExercises.push(await Exercise.create(exercise));
     }
     catch (err) {
-      res.status(500).send("Something went wrong bulk uploading exercises");
+      res.status(500).send({ message: err.message || "something went wrong bulk uploading exercises"});
       return;
     }
   }
