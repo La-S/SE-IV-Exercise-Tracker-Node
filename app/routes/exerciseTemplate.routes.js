@@ -1,12 +1,12 @@
 import exerciseTemplate from "../controllers/exerciseTemplate.controller.js";
 import authenticate from "../authorization/authorization.js";
+import isCoachAdmin from "../authorization/authorization.js";
 import { Router } from "express";
 var router = Router()
 
-//AUTHENTICATE ALWAYS RETURNS TRUE
 
 // Create a new exerciseTemplate
-router.post("/", [authenticate], exerciseTemplate.create);
+router.post("/", [authenticate, isCoachAdmin], exerciseTemplate.create);
 
 // Retrieve all exerciseTemplates
 router.get("/", [authenticate], exerciseTemplate.findAll);
@@ -15,10 +15,10 @@ router.get("/", [authenticate], exerciseTemplate.findAll);
 router.get("/:id", [authenticate], exerciseTemplate.findOne);
 
 // Update an exerciseTemplate with id
-router.put("/:id", [authenticate], exerciseTemplate.update);
+router.put("/:id", [authenticate, isCoachAdmin], exerciseTemplate.update);
 
 // Delete an exerciseTemplate with id
-router.delete("/:id", [authenticate], exerciseTemplate.delete);
+router.delete("/:id", [authenticate, isCoachAdmin], exerciseTemplate.delete);
 
 
 export default router;

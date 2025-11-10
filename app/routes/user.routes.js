@@ -1,5 +1,6 @@
 import users from "../controllers/user.controller.js";
 import authenticate from "../authorization/authorization.js";
+import isAdminOnly from "../authorization/authorization.js";
 import { Router } from "express";
 var router = Router()
 
@@ -16,7 +17,7 @@ router.get("/:id", [authenticate], users.findOne);
 // Update a User with idF
 router.put("/:id", [authenticate], users.update);
 
-router.put("/:id/role", [authenticate], users.updateRole)
+router.put("/:id/role", [authenticate, isAdminOnly], users.updateRole)
 
 // Delete a User with id
 router.delete("/:id", [authenticate], users.delete);

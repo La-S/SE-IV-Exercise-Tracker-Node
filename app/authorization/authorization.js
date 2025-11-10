@@ -1,9 +1,9 @@
-import db  from "../models/index.js";
+import db from "../models/index.js";
 const Session = db.session;
 
 const authenticate = (req, res, next) => {
   let token = null;
- 
+
   let authHeader = req.get("authorization");
   if (authHeader != null) {
     if (authHeader.startsWith("Bearer ")) {
@@ -31,6 +31,70 @@ const authenticate = (req, res, next) => {
     return res.status(401).send({
       message: "Unauthorized! No Auth Header",
     });
+  }
+};
+
+const isCoachAdmin = (req, res, next) => {
+  let token = null;
+
+  let authHeader = req.get("authorization");
+  if (authHeader == null) {
+    res.status(401).send("Unauthorized, no auth header");
+    return;
+  }
+  if (authHeader.startsWith("Bearer ")) {
+    token = authHeader.slice(7);
+
+    Session.findAll({ where: { token: token } })
+      .then(async (data) => {
+        let session = data[0];
+        console.log(session.expirationDate);
+        if (session != null) {
+          let user = await session.getUser();
+          if (user.role == 'admin' || user.role == 'coach') {
+            next();
+            return;
+          }
+        } else
+          return res.status(401).send({
+            message: "Unauthorized! User must be admin or coach to perform this function"
+          });
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }
+};
+
+const isAdminOnly = (req, res, next) => {
+  let token = null;
+
+  let authHeader = req.get("authorization");
+  if (authHeader == null) {
+    res.status(401).send("Unauthorized, no auth header");
+    return;
+  }
+  if (authHeader.startsWith("Bearer ")) {
+    token = authHeader.slice(7);
+
+    Session.findAll({ where: { token: token } })
+      .then(async (data) => {
+        let session = data[0];
+        console.log(session.expirationDate);
+        if (session != null) {
+          let user = await session.getUser();
+          if (user.role == 'admin') {
+            next();
+            return;
+          }
+        } else
+          return res.status(401).send({
+            message: "Unauthorized! User must be admin or coach to perform this function"
+          });
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   }
 };
 
