@@ -140,7 +140,7 @@ exports.addUsers = async (req, res) => {
     res.status(404).send({ message: "team not found!" });
     return;
   }
-  const users = req.body.userIds;
+  const users = req.body;
   team.addUsers(users)
     .then(() =>
       res.status(200).send({
@@ -164,7 +164,7 @@ exports.removeUsers = async (req, res) => {
     res.status(404).send({ message: "team not found!" });
     return;
   }
-  const users = req.body.userIds;
+  const users = req.body;
   team.removeUsers(users)
     .then(() =>
       res.status(200).send({
