@@ -5,14 +5,14 @@ var router = Router()
 
 
 
-// // Login
-// router.post("/login", auth.login);
+// Login
+router.post("/login", auth.login);
 
-// // Authorization
-// router.post("/authorize/:id", auth.authorize);
+// Authorization
+router.post("/authorize/:id", auth.authorize);
 
-// // Logout
-// router.post("/logout", auth.logout);
+// Logout
+router.post("/logout", auth.logout);F
 
 export default router
 

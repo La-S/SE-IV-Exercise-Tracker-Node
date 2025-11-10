@@ -3,7 +3,6 @@ import authenticate from "../authorization/authorization.js";
 import { Router } from "express";
 var router = Router()
 
-//AUTHENTICATE ALWAYS RETURNS TRUE
 
 // Create a new User
 router.post("/", [authenticate], users.create);
@@ -14,7 +13,7 @@ router.get("/", [authenticate], users.findAll);
 // Retrieve a single User with id
 router.get("/:id", [authenticate], users.findOne);
 
-// Update a User with id
+// Update a User with idF
 router.put("/:id", [authenticate], users.update);
 
 // Delete a User with id

@@ -20,9 +20,9 @@ router.put("/:id", [authenticate], exercise.update);
 // Delete a User with id
 router.delete("/:id", [authenticate], exercise.delete);
 
-router.get("/:id/sets", exercise.getSets);
+router.get("/:id/sets", [authenticate], exercise.getSets);
 
-router.post("/workout/:id", exercise.createMany);
+router.post("/workout/:id", [authenticate], exercise.createMany);
 
 export default router;
 
