@@ -29,15 +29,15 @@ const User = SequelizeInstance.define("user", {
         msg: "role not allowed. Valid roles are user and admin"
       }
     }
-  }
-  // refresh_token: {
-  //   type: Sequelize.STRING(512),
-  //   allowNull: true
-  // },
-  // expiration_date: {
-  //   type: Sequelize.DATE,
-  //   allowNull: true
-  // },
+  },
+  refresh_token: {
+    type: Sequelize.STRING(512),
+    allowNull: true
+  },
+  expiration_date: {
+    type: Sequelize.DATE,
+    allowNull: true
+  },
 });
 
 export default User;
