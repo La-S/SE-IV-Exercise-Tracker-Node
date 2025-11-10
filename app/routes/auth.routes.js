@@ -12,7 +12,7 @@ router.post("/login", auth.login);
 router.post("/authorize/:id", auth.authorize);
 
 // Logout
-router.post("/logout", auth.logout);F
+router.post("/logout", auth.logout);
 
 export default router
 

@@ -1,23 +1,24 @@
-module.exports = (sequelize, Sequelize) => {
-  const Session = sequelize.define("session", {
+import Sequelize from "sequelize";
+import SequelizeInstance from "../config/sequelizeInstance.js";
+
+const Session = SequelizeInstance.define("session", {
     id: {
-      type: Sequelize.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
     },
     token: {
-      type: Sequelize.STRING(3000),
-      allowNull: false,
+        type: Sequelize.STRING(3000),
+        allowNull: false,
     },
     email: {
-      type: Sequelize.STRING,
-      allowNull: false,
+        type: Sequelize.STRING(100),
+        allowNull: false,
     },
     expirationDate: {
-      type: Sequelize.DATE,
-      allowNull: false,
+        type: Sequelize.DATE,
+        allowNull: false,
     },
-  });
+});
 
-  return Session;
-};
+export default Session;
