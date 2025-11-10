@@ -16,6 +16,8 @@ router.get("/:id", [authenticate], users.findOne);
 // Update a User with idF
 router.put("/:id", [authenticate], users.update);
 
+router.put("/:id/role", [authenticate], users.updateRole)
+
 // Delete a User with id
 router.delete("/:id", [authenticate], users.delete);
 
