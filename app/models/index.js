@@ -57,5 +57,11 @@ db.user.hasMany(db.workout,
 db.workout.belongsTo(db.user,
     { foreignKey: "coach_id" });
 
+//a user has many sessions
+db.user.hasMany(db.session,
+    { foreignKey: { name: "user_id", allowNull: false }, onDelete: "CASCADE" });
+db.session.belongsTo(db.user,
+    { foreignKey: { name: "user_id", allowNull: false }, onDelete: "CASCADE" });
+    
 db.sequelize.sync();
 export default db;
