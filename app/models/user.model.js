@@ -1,7 +1,7 @@
 import Sequelize from "sequelize";
 import SequelizeInstance from "../config/sequelizeInstance.js";
 
-const allowedRoles = ['user', 'admin'];
+const allowedRoles = ['user', 'coach', 'admin'];
 const User = SequelizeInstance.define("user", {
 
   id: {
