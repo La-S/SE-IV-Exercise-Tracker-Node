@@ -1,5 +1,4 @@
 import auth from "../controllers/auth.controller.js";
-import authenticate from "../authorization/authorization.js";
 import { Router } from "express";
 var router = Router()
 

@@ -1,28 +1,27 @@
 import exercise from "../controllers/exercise.controller.js";
-import authenticate from "../authorization/authorization.js";
+import auth from "../authorization/authorization.js";
 import { Router } from "express";
 var router = Router()
 
-//AUTHENTICATE ALWAYS RETURNS TRUE
 
 // Create a new User
-router.post("/", [authenticate], exercise.create);
+router.post("/", [auth.authenticate], exercise.create);
 
 // Retrieve all People
-router.get("/", [authenticate], exercise.findAll);
+router.get("/", [auth.authenticate], exercise.findAll);
 
 // Retrieve a single User with id
-router.get("/:id", [authenticate], exercise.findOne);
+router.get("/:id", [auth.authenticate], exercise.findOne);
 
 // Update a User with id
-router.put("/:id", [authenticate], exercise.update);
+router.put("/:id", [auth.authenticate], exercise.update);
 
 // Delete a User with id
-router.delete("/:id", [authenticate], exercise.delete);
+router.delete("/:id", [auth.authenticate], exercise.delete);
 
-router.get("/:id/sets", [authenticate], exercise.getSets);
+router.get("/:id/sets", [auth.authenticate], exercise.getSets);
 
-router.post("/workout/:id", [authenticate], exercise.createMany);
+router.post("/workout/:id", [auth.authenticate], exercise.createMany);
 
 export default router;
 

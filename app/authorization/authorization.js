@@ -1,7 +1,8 @@
 import db from "../models/index.js";
 const Session = db.session;
 
-const authenticate = (req, res, next) => {
+const auth = {};
+auth.authenticate = (req, res, next) => {
   let token = null;
 
   let authHeader = req.get("authorization");
@@ -34,7 +35,7 @@ const authenticate = (req, res, next) => {
   }
 };
 
-const isCoachAdmin = (req, res, next) => {
+auth.isCoachAdmin = (req, res, next) => {
   let token = null;
 
   let authHeader = req.get("authorization");
@@ -66,7 +67,7 @@ const isCoachAdmin = (req, res, next) => {
   }
 };
 
-const isAdminOnly = (req, res, next) => {
+auth.isAdminOnly = (req, res, next) => {
   let token = null;
 
   let authHeader = req.get("authorization");
@@ -100,4 +101,4 @@ const isAdminOnly = (req, res, next) => {
 
 
 
-export default authenticate;
+export default auth;

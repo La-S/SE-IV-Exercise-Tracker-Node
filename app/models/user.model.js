@@ -30,14 +30,14 @@ const User = SequelizeInstance.define("user", {
       }
     }
   },
-  refresh_token: {
-    type: Sequelize.STRING(512),
-    allowNull: true
-  },
-  expiration_date: {
-    type: Sequelize.DATE,
-    allowNull: true
-  },
+  // refresh_token: {
+  //   type: Sequelize.STRING(512),
+  //   allowNull: true
+  // },
+  // expiration_date: {
+  //   type: Sequelize.DATE,
+  //   allowNull: true
+  // },
 });
 
 export default User;

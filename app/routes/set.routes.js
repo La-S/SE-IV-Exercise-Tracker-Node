@@ -1,23 +1,23 @@
 import set from "../controllers/set.controller.js";
-import authenticate from "../authorization/authorization.js";
+import auth from "../authorization/authorization.js";
 import { Router } from "express";
 var router = Router()
 
 // Create a new set
-router.post("/", [authenticate], set.create);
+router.post("/", [auth.authenticate], set.create);
 
 // Find all the Sets
-router.get("/", [authenticate], set.findAll);
+router.get("/", [auth.authenticate], set.findAll);
 
 // Retrieve a single set with id
-router.get("/:id", [authenticate], set.findOne);
+router.get("/:id", [auth.authenticate], set.findOne);
 
 // Update a set with id
-router.put("/:id", [authenticate], set.update);
+router.put("/:id", [auth.authenticate], set.update);
 
 // Delete a set with id
-router.delete("/:id", [authenticate], set.delete);
+router.delete("/:id", [auth.authenticate], set.delete);
 
-router.post("/exercise/:id", [authenticate], set.createMany);
+router.post("/exercise/:id", [auth.authenticate], set.createMany);
 
 export default router

@@ -65,5 +65,5 @@ db.user.hasMany(db.session,
 db.session.belongsTo(db.user,
     { foreignKey: { name: "user_id", allowNull: false }, onDelete: "CASCADE" });
 
-db.sequelize.sync();
+db.sequelize.sync({force: true});
 export default db;

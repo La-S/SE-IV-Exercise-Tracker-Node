@@ -71,14 +71,15 @@ exports.login = async (req, res) => {
       } else {
         // create a new User and save to database
         user = {
-          fName: firstName,
-          lName: lastName,
+          first_name: firstName,
+          last_name: lastName,
           email: email,
         };
       }
     })
     .catch((err) => {
       res.status(500).send({ message: err.message });
+      return;
     });
 
   // this lets us get the user id
@@ -88,7 +89,7 @@ exports.login = async (req, res) => {
       .then((data) => {
         user = data.dataValues;
         res.status(200).send({ message: "User was registered successfully!" });
-        return
+        return;
       })
       .catch((err) => {
         res.status(500).send({ message: err.message });
@@ -97,8 +98,8 @@ exports.login = async (req, res) => {
   } else {
     
     // doing this to ensure that the user's name is the one listed with Google
-    user.fName = firstName;
-    user.lName = lastName;
+    user.first_name = firstName;
+    user.last_name = lastName;
   
     await User.update(user, { where: { id: user.id } })
       .then((num) => {
@@ -152,8 +153,8 @@ exports.login = async (req, res) => {
           // if the session is still valid, then send info to the front end
           let userInfo = {
             email: user.email,
-            fName: user.fName,
-            lName: user.lName,
+            firstName: user.first_name,
+            lastName: user.last_name,
             userId: user.id,
             token: session.token,
             // refresh_token: user.refresh_token,
@@ -193,8 +194,8 @@ exports.login = async (req, res) => {
       .then(() => {
         let userInfo = {
           email: user.email,
-          fName: user.fName,
-          lName: user.lName,
+          firstName: user.first_name,
+          lastName: user.last_name,
           userId: user.id,
           token: token,
           // refresh_token: user.refresh_token,
