@@ -21,4 +21,6 @@ router.get("/:id/exercises", workout.getExercises);
 
 router.get("/user/:id", workout.getWorkoutsForUser);
 
+router.get("/user/:id/dated", workout.getUserWorkoutsDated);
+
 export default router

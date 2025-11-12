@@ -125,19 +125,24 @@ exports.delete = (req, res) => {
         });
 };
 
-//have valid exerciseId checked in exercise controller?
-//NOT TESTED
-// exports.findForExercise = (req, res) => {
-//     const exerciseId = req.query.exerciseId
+exports.createMany = async (req, res) => {
+    let exerciseId = req.params.id;
+    let sets = req.body;
+    let savedSets = [];
+    for (let set of sets) {
+        set = convertToSnake(set);
+        set.exercise_id = exerciseId;
+        try {
+            savedSets.push(await Set.create(set));
+        }
+        catch (err) {
+            res.status(500).send({ message: err.message || "something went wrong bulk uploading exercises"});
+            return;
+        }
+    }
+    res.status(200).send(savedSets);
 
-//     Set.findAll({ where: { exercise_id: exerciseId } })
-//         .then((data) => {
-//             return data;
-//         })
-//         .catch((err) => {
-//             throw new Error(`Error getting sets for exercise with id: ${exerciseId}`);
-//         });
-// };
+}
 
 function convertToSnake(req) {
     let updateInfo = {};

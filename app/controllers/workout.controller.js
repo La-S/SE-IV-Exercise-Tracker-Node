@@ -166,6 +166,28 @@ exports.getWorkoutsForUser = (req, res) => {
         });
 }
 
+exports.getUserWorkoutsDated = (req, res) => {
+    let startDate = req.body.startDate;
+    let endDate = req.body.endDate;
+    let userId = req.params.id;
+    const user = User.findByPk(userId);
+    if (!user) {
+        res.status(404).send({
+            message: "user not found"
+        })
+        return;
+    }
+    Workout.findAll({ where: { user_id: userId, expected_date: { [Op.between]: [startDate, endDate] } } })
+        .then((data) => {
+            res.send(data);
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: err.message || "Some error occurred while retrieving workouts.",
+            });
+        });
+}
+
 function convertToSnake(req) {
     let updateInfo = {};
     updateInfo.parent_id = req.parentId ?? undefined;
