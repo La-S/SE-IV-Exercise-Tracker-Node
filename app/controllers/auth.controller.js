@@ -158,6 +158,7 @@ exports.login = async (req, res) => {
             lastName: user.last_name,
             user_id: user.id,
             token: session.token,
+            role: user.role,
             // refresh_token: user.refresh_token,
             // expiration_date: user.expiration_date
           };
