@@ -8,7 +8,8 @@ var router = Router()
 router.post("/login", auth.login);
 
 // Authorization
-router.post("/authorize/:id", auth.authorize);
+// router.post("/authorize/:id", auth.authorize);
+// todo if want to use this address security concerns first
 
 // Logout
 router.post("/logout", auth.logout);
