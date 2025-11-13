@@ -20,10 +20,6 @@ const UserStats = SequelizeInstance.define("user_stats", {
     type: Sequelize.INTEGER,
     allowNull: true,
   },
-  user_Id: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-  },
 });
 
 export default UserStats;
