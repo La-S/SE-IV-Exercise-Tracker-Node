@@ -10,6 +10,7 @@ import Workout from "./workout.model.js"
 import Exercise from "./exercise.model.js"
 import Set from "./set.model.js"
 import ExerciseTemplate from "./exerciseTemplate.model.js";
+import Session from "./session.model.js";
 import UserStats from "./userStats.model.js";
 
 
@@ -23,6 +24,7 @@ db.workout = Workout;
 db.exercise = Exercise;
 db.set = Set;
 db.exerciseTemplate = ExerciseTemplate;
+db.session = Session;
 db.userStats = UserStats;
 
 //users can be on many teams and teams have many users
@@ -59,6 +61,11 @@ db.user.hasMany(db.workout,
 db.workout.belongsTo(db.user,
     { foreignKey: "coach_id" });
 
+//a user has many sessions
+db.user.hasMany(db.session,
+    { foreignKey: { name: "user_id", allowNull: false }, onDelete: "CASCADE" });
+db.session.belongsTo(db.user,
+    { foreignKey: { name: "user_id", allowNull: false }, onDelete: "CASCADE" });
 //user stats per user
 db.user.hasMany(db.userStats,
     { foreignKey: { name: "user_Id", allowNull: false }, onDelete: "CASCADE" });

@@ -1,27 +1,28 @@
 import users from "../controllers/user.controller.js";
-import authenticate from "../authorization/authorization.js";
+import auth from "../authorization/authorization.js";
 import { Router } from "express";
 var router = Router()
 
-//AUTHENTICATE ALWAYS RETURNS TRUE
 
 // Create a new User
-router.post("/", [authenticate], users.create);
+router.post("/", [auth.authenticate], users.create);
 
 // Retrieve all People
-router.get("/", [authenticate], users.findAll);
+router.get("/", [auth.authenticate], users.findAll);
 
 // Retrieve a single User with id
-router.get("/:id", [authenticate], users.findOne);
+router.get("/:id", [auth.authenticate], users.findOne);
 
-// Update a User with id
-router.put("/:id", [authenticate], users.update);
+// Update a User with idF
+router.put("/:id", [auth.authenticate], users.update);
+
+router.put("/:id/role", [auth.authenticate, auth.isAdminOnly], users.updateRole)
 
 // Delete a User with id
-router.delete("/:id", [authenticate], users.delete);
+router.delete("/:id", [auth.authenticate], users.delete);
 
 //Get teams for user
-router.get("/:id/teams", [authenticate], users.getTeams);
+router.get("/:id/teams", [auth.authenticate], users.getTeams);
 
 export default router;
 

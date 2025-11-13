@@ -1,7 +1,7 @@
 import Sequelize from "sequelize";
 import SequelizeInstance from "../config/sequelizeInstance.js";
 
-const allowedRoles = ['user', 'admin'];
+const allowedRoles = ['user', 'coach', 'admin'];
 const User = SequelizeInstance.define("user", {
 
   id: {
@@ -29,7 +29,7 @@ const User = SequelizeInstance.define("user", {
         msg: "role not allowed. Valid roles are user and admin"
       }
     }
-  }
+  },
   // refresh_token: {
   //   type: Sequelize.STRING(512),
   //   allowNull: true
