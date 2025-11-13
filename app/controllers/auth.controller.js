@@ -1,7 +1,7 @@
-import db  from "../models/index.js";
-import authconfig  from "../config/auth.config.js";
+import db from "../models/index.js";
+import authconfig from "../config/auth.config.js";
 import { OAuth2Client } from "google-auth-library";
-import  { google } from "googleapis";
+import { google } from "googleapis";
 import jwt from "jsonwebtoken";
 
 const User = db.user;
@@ -15,11 +15,11 @@ const google_id = process.env.CLIENT_ID;
 const exports = {};
 
 exports.login = async (req, res) => {
- 
+
 
   var googleToken = req.body.credential;
 
- 
+
   const client = new OAuth2Client(google_id);
   async function verify() {
     const ticket = await client.verifyIdToken({
@@ -73,7 +73,7 @@ exports.login = async (req, res) => {
         let role = "user";
         let emailDomain = (email.split("@"));
         emailDomain = emailDomain[1];
-        if (emailDomain === "oc.edu")){
+        if (emailDomain == "oc.edu") {
           role = "coach";
         }
         user = {
@@ -91,7 +91,7 @@ exports.login = async (req, res) => {
 
   // this lets us get the user id
   if (user.id === undefined) {
-  
+
     await User.create(user)
       .then((data) => {
         user = data.dataValues;
@@ -102,11 +102,11 @@ exports.login = async (req, res) => {
         res.status(500).send({ message: err.message });
       });
   } else {
-    
+
     // doing this to ensure that the user's name is the one listed with Google
     user.first_name = firstName;
     user.last_name = lastName;
-  
+
     await User.update(user, { where: { id: user.id } })
       .then((num) => {
         if (num == 1) {
