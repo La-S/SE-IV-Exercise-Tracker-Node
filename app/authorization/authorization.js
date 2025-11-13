@@ -25,7 +25,9 @@ auth.authenticate = (req, res, next) => {
           }
         })
         .catch((err) => {
-          console.log(err.message);
+          return res.status(500).send({
+            message: err.message || "an unknown error occurred while authenticating",
+          });
         });
     }
   } else {
@@ -35,6 +37,7 @@ auth.authenticate = (req, res, next) => {
   }
 };
 
+//AUTHORIZATION METHOD, DOES NOT REPLACE AUTHENTICATE
 auth.isCoachAdmin = (req, res, next) => {
   let token = null;
 
@@ -48,7 +51,6 @@ auth.isCoachAdmin = (req, res, next) => {
     Session.findAll({ where: { token: token } })
       .then(async (data) => {
         let session = data[0];
-        console.log(session.expirationDate);
         if (session != null) {
           let user = await session.getUser();
           if (user.role == 'admin' || user.role == 'coach') {
@@ -65,11 +67,14 @@ auth.isCoachAdmin = (req, res, next) => {
         });
       })
       .catch((err) => {
-        console.log(err.message);
+        return res.status(500).send({
+          message: err.message || "an unknown error occurred while authenticating",
+        });
       });
   }
 };
 
+//AUTHORIZATION METHOD, DOES NOT REPLACE AUTHENTICATE
 auth.isAdminOnly = (req, res, next) => {
   let token = null;
 
@@ -83,7 +88,6 @@ auth.isAdminOnly = (req, res, next) => {
     Session.findAll({ where: { token: token } })
       .then(async (data) => {
         let session = data[0];
-        console.log(session.expirationDate);
         if (session != null) {
           let user = await session.getUser();
           if (user.role == 'admin') {
@@ -92,7 +96,7 @@ auth.isAdminOnly = (req, res, next) => {
           }
           else
             return res.status(401).send({
-              message: "Unauthorized! User must be admin or coach to perform this function"
+              message: "Unauthorized! User must be admin to perform this function"
             });
         }
         return res.status(401).send({
@@ -100,7 +104,9 @@ auth.isAdminOnly = (req, res, next) => {
         });
       })
       .catch((err) => {
-        console.log(err.message);
+        return res.status(500).send({
+          message: err.message || "an unknown error occurred while authenticating",
+        });
       });
   }
 };
