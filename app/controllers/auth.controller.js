@@ -70,12 +70,17 @@ exports.login = async (req, res) => {
         user = data.dataValues;
       } else {
         // create a new User and save to database
-        //DEFAULT TO ADMIN SO ALL ROUTES AVAILABLE, CHANGE LATER
+        let role = "coach";
+        let emailDomain = (email.split("@"));
+        emailDomain = emailDomain[1];
+        if (emailDomain.includes("eagles")){
+          role = "user";
+        }
         user = {
           first_name: firstName,
           last_name: lastName,
           email: email,
-          role: "admin"
+          role: role
         };
       }
     })
