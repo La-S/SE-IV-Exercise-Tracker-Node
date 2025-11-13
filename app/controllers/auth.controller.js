@@ -217,66 +217,67 @@ exports.login = async (req, res) => {
   }
 };
 
-exports.authorize = async (req, res) => {
-  console.log("authorize client");
-  const oauth2Client = new google.auth.OAuth2(
-    process.env.CLIENT_ID,
-    process.env.CLIENT_SECRET,
-    "postmessage"
-  );
+//address token security concerns if needed.
+// exports.authorize = async (req, res) => {
+//   console.log("authorize client");
+//   const oauth2Client = new google.auth.OAuth2(
+//     process.env.CLIENT_ID,
+//     process.env.CLIENT_SECRET,
+//     "postmessage"
+//   );
 
-  console.log("authorize token");
-  // Get access and refresh tokens (if access_type is offline)
-  let { tokens } = await oauth2Client.getToken(req.body.code);
-  oauth2Client.setCredentials(tokens);
+//   console.log("authorize token");
+//   // Get access and refresh tokens (if access_type is offline)
+//   let { tokens } = await oauth2Client.getToken(req.body.code);
+//   oauth2Client.setCredentials(tokens);
 
-  let user = {};
-  console.log("findUser");
+//   let user = {};
+//   console.log("findUser");
 
-  await User.findOne({
-    where: {
-      id: req.params.id,
-    },
-  })
-    .then((data) => {
-      if (data != null) {
-        user = data.dataValues;
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({ message: err.message });
-      return;
-    });
-  console.log("user");
-  console.log(user);
-  user.refresh_token = tokens.refresh_token;
-  let tempExpirationDate = new Date();
-  tempExpirationDate.setDate(tempExpirationDate.getDate() + 100);
-  user.expiration_date = tempExpirationDate;
+//   await User.findOne({
+//     where: {
+//       id: req.params.id,
+//     },
+//   })
+//     .then((data) => {
+//       if (data != null) {
+//         user = data.dataValues;
+//       }
+//     })
+//     .catch((err) => {
+//       res.status(500).send({ message: err.message });
+//       return;
+//     });
+//   console.log("user");
+//   console.log(user);
+//   user.refresh_token = tokens.refresh_token;
+//   let tempExpirationDate = new Date();
+//   tempExpirationDate.setDate(tempExpirationDate.getDate() + 100);
+//   user.expiration_date = tempExpirationDate;
 
-  await User.update(user, { where: { id: user.id } })
-    .then((num) => {
-      if (num == 1) {
-        console.log("updated user's google token stuff");
-      } else {
-        console.log(
-          `Cannot update User with id=${user.id}. Maybe User was not found or req.body is empty!`
-        );
-      }
-      let userInfo = {
-        refresh_token: user.refresh_token,
-        expiration_date: user.expiration_date,
-      };
-      console.log(userInfo);
-      res.send(userInfo);
-    })
-    .catch((err) => {
-      res.status(500).send({ message: err.message });
-    });
+//   await User.update(user, { where: { id: user.id } })
+//     .then((num) => {
+//       if (num == 1) {
+//         console.log("updated user's google token stuff");
+//       } else {
+//         console.log(
+//           `Cannot update User with id=${user.id}. Maybe User was not found or req.body is empty!`
+//         );
+//       }
+//       let userInfo = {
+//         refresh_token: user.refresh_token,
+//         expiration_date: user.expiration_date,
+//       };
+//       console.log(userInfo);
+//       res.send(userInfo);
+//     })
+//     .catch((err) => {
+//       res.status(500).send({ message: err.message });
+//     });
 
-  console.log(tokens);
-  console.log(oauth2Client);
-};
+//   console.log(tokens);
+//   console.log(oauth2Client);
+// };
 
 exports.logout = async (req, res) => {
   console.log(req.body);
