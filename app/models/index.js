@@ -72,5 +72,5 @@ db.user.hasMany(db.userStats,
 db.userStats.belongsTo(db.user,
     { foreignKey: { name: "user_Id", allowNull: false }, onDelete: "CASCADE" });
 
-db.sequelize.sync({force: true});
+db.sequelize.sync();
 export default db;
