@@ -197,7 +197,7 @@ exports.login = async (req, res) => {
           email: user.email,
           firstName: user.first_name,
           lastName: user.last_name,
-          user_id: user.id,
+          id: user.id,
           token: token,
           // refresh_token: user.refresh_token,
           // expiration_date: user.expiration_date
