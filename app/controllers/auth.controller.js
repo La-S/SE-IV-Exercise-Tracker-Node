@@ -70,11 +70,11 @@ exports.login = async (req, res) => {
         user = data.dataValues;
       } else {
         // create a new User and save to database
-        let role = "coach";
+        let role = "user";
         let emailDomain = (email.split("@"));
         emailDomain = emailDomain[1];
-        if (emailDomain.includes("eagles")){
-          role = "user";
+        if (emailDomain === "oc.edu")){
+          role = "coach";
         }
         user = {
           first_name: firstName,
