@@ -70,10 +70,12 @@ exports.login = async (req, res) => {
         user = data.dataValues;
       } else {
         // create a new User and save to database
+        //DEFAULT TO ADMIN SO ALL ROUTES AVAILABLE, CHANGE LATER
         user = {
           first_name: firstName,
           last_name: lastName,
           email: email,
+          role: "admin"
         };
       }
     })
@@ -93,7 +95,6 @@ exports.login = async (req, res) => {
       })
       .catch((err) => {
         res.status(500).send({ message: err.message });
-        return;
       });
   } else {
     
@@ -155,7 +156,7 @@ exports.login = async (req, res) => {
             email: user.email,
             firstName: user.first_name,
             lastName: user.last_name,
-            userId: user.id,
+            user_id: user.id,
             token: session.token,
             // refresh_token: user.refresh_token,
             // expiration_date: user.expiration_date
@@ -183,7 +184,7 @@ exports.login = async (req, res) => {
     const session = {
       token: token,
       email: email,
-      userId: user.id,
+      user_id: user.id,
       expirationDate: tempExpirationDate,
     };
 
@@ -196,7 +197,7 @@ exports.login = async (req, res) => {
           email: user.email,
           firstName: user.first_name,
           lastName: user.last_name,
-          userId: user.id,
+          user_id: user.id,
           token: token,
           // refresh_token: user.refresh_token,
           // expiration_date: user.expiration_date
