@@ -3,6 +3,7 @@ const Workout = db.workout;
 const exerciseTemplate = db.exerciseTemplate;
 const Op = db.Sequelize.Op;
 const User = db.user;
+const Team = db.team;
 const exports = {};
 
 // Create and Save a new workout
@@ -186,7 +187,46 @@ exports.getUserWorkoutsDated = (req, res) => {
                 message: err.message || "Some error occurred while retrieving workouts.",
             });
         });
+};
+
+exports.assignWorkoutToTeam = (req, res) => {
+    let workoutId = req.params.id;
+    let teamId = req.params.teamId;
+
+    let workoutToShare = Workout.findByPk(workoutId);
+    if (!workoutToShare) {
+        res.status(404).send({ message: "workout not found" });
+        return;
+    }
+
+    let team = Team.findByPk(teamId);
+    if (!team) {
+        res.status(404).send({ message: "team not found" });
+        return;
+    }
 }
+
+exports.getTeamWorkoutsDated = async (req, res) => {
+  const id = req.params.id;
+  const startDate = req.body.startDate;
+  const endDate = req.body.endDate;
+  const team = await Team.findByPk(id);
+  if (!team) {
+    res.status(404).send({ message: "team not found!" });
+    return;
+  }
+  let users = await team.getUsers();
+  let workouts = [];
+  for (const user of users){
+    let userId = user.dataValues.id;
+    let workoutData = await Workout.findAll({ where: { user_id: userId, expected_date: { [Op.between]: [startDate, endDate] } } });
+    for (const workout of workoutData){
+        workouts.push(workout);
+    }
+  }
+  res.status(200).send(workouts);
+
+};
 
 function convertToSnake(req) {
     let updateInfo = {};

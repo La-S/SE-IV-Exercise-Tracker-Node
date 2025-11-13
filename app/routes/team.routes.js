@@ -24,6 +24,4 @@ router.delete("/:id/users", [auth.authenticate, auth.isCoachAdmin], team.removeU
 
 router.get("/:id/users", [auth.authenticate], team.getUsers);
 
-router.get("/:id/workouts/dated", [auth.authenticate, auth.isCoachAdmin], team.getWorkoutsDated);
-
 export default router

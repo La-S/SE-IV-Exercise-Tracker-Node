@@ -195,22 +195,4 @@ exports.getUsers = async (req, res) => {
     });
 };
 
-exports.getWorkoutsDated = async (req, res) => {
-  const id = req.params.id;
-  const startDate = req.body.startDate;
-  const endDate = req.body.endDate;
-  const team = await Team.findByPk(id);
-  if (!team) {
-    res.status(404).send({ message: "team not found!" });
-    return;
-  }
-  let users = await team.getUsers();
-  let workouts = [];
-  for (const user of users){
-    let userId = user.dataValues.id;
-    let workoutData = await Workout.findAll({ where: { user_id: userId, expected_date: { [Op.between]: [startDate, endDate] } } });
-    workouts.push(workoutData);
-  }
-  res.status(200).send(workouts);
-};
 export default exports;
