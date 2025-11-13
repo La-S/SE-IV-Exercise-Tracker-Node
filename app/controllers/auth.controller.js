@@ -90,7 +90,7 @@ exports.login = async (req, res) => {
     await User.create(user)
       .then((data) => {
         user = data.dataValues;
-        res.status(200).send({ message: "User was registered successfully!" });
+        //res.status(200).send({ message: "User was registered successfully!" });
         return;
       })
       .catch((err) => {
