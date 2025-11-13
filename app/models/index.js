@@ -11,6 +11,7 @@ import Exercise from "./exercise.model.js"
 import Set from "./set.model.js"
 import ExerciseTemplate from "./exerciseTemplate.model.js";
 import Session from "./session.model.js";
+import UserStats from "./userStats.model.js";
 
 
 const db = {};
@@ -24,6 +25,7 @@ db.exercise = Exercise;
 db.set = Set;
 db.exerciseTemplate = ExerciseTemplate;
 db.session = Session;
+db.userStats = UserStats;
 
 //users can be on many teams and teams have many users
 db.user.belongsToMany(db.team,
@@ -64,6 +66,11 @@ db.user.hasMany(db.session,
     { foreignKey: { name: "user_id", allowNull: false }, onDelete: "CASCADE" });
 db.session.belongsTo(db.user,
     { foreignKey: { name: "user_id", allowNull: false }, onDelete: "CASCADE" });
+//user stats per user
+db.user.hasMany(db.userStats,
+    { foreignKey: { name: "user_Id", allowNull: false }, onDelete: "CASCADE" });
+db.userStats.belongsTo(db.user,
+    { foreignKey: { name: "user_Id", allowNull: false }, onDelete: "CASCADE" });
 
 db.sequelize.sync();
 export default db;

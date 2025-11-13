@@ -21,6 +21,9 @@ const Workout = SequelizeInstance.define("workout", {
     },
     total_time: {
         type: Sequelize.INTEGER
+    },
+    focus_area: {
+        type: Sequelize.STRING(50)
     }
 });
 
