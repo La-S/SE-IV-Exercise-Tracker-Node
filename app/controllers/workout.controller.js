@@ -197,6 +197,7 @@ function convertToSnake(req) {
     updateInfo.expected_date = req.expectedDate ?? undefined;
     updateInfo.date = req.date ?? undefined;
     updateInfo.total_time = req.totalTime ?? undefined;
+    updateInfo.focus_area = req.focusArea ?? undefined;
     return updateInfo;
 }
 

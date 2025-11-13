@@ -141,7 +141,7 @@ exports.addUsers = async (req, res) => {
     res.status(404).send({ message: "team not found!" });
     return;
   }
-  const users = req.body.userIds;
+  const users = req.body;
   team.addUsers(users)
     .then(() =>
       res.status(200).send({
@@ -165,7 +165,7 @@ exports.removeUsers = async (req, res) => {
     res.status(404).send({ message: "team not found!" });
     return;
   }
-  const users = req.body.userIds;
+  const users = req.body;
   team.removeUsers(users)
     .then(() =>
       res.status(200).send({
@@ -206,25 +206,11 @@ exports.getWorkoutsDated = async (req, res) => {
   }
   let users = await team.getUsers();
   let workouts = [];
-  console.log("before")
   for (const user of users){
     let userId = user.dataValues.id;
     let workoutData = await Workout.findAll({ where: { user_id: userId, expected_date: { [Op.between]: [startDate, endDate] } } });
     workouts.push(workoutData);
   }
-  // await users.forEach(async user => {
-  //   let id = user.dataValues.id;
-  //   let workoutData = await Workout.findAll();
-  //   // console.log(workoutData);
-  //   console.log("during")
-  //   workouts.push(workoutData);
-    // .catch((err) => {
-    //     res.status(500).send({
-    //         message: err.message || "Some error occurred while retrieving workouts.",
-    //     });
-    // });  
-  // });
-  console.log("after")
   res.status(200).send(workouts);
 };
 export default exports;
