@@ -14,7 +14,7 @@ exports.create = (req, res) => {
   }
 
   const stat = {
-    userId: req.body.userId,
+    userId: req.body.user_Id,
     timestamp: req.body.timestamp,
     weight: req.body.weight,
     height: req.body.height,

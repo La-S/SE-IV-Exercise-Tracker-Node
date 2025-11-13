@@ -20,7 +20,7 @@ const UserStats = SequelizeInstance.define("user_stats", {
     type: Sequelize.INTEGER,
     allowNull: true,
   },
-  userId: {
+  user_Id: {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
