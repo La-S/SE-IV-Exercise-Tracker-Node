@@ -36,7 +36,6 @@ exports.login = async (req, res) => {
   let lastName = googleUser.family_name;
 
   // if we don't have their email or name, we need to make another request
-  // this is solely for testing purposes
   if (
     (email === undefined ||
       firstName === undefined ||
@@ -142,7 +141,7 @@ exports.login = async (req, res) => {
                 console.log("successfully logged out");
               } else {
                 console.log("failed");
-                res.send({
+                res.status(500).send({
                   message: `Error logging out user.`,
                 });
               }
@@ -316,7 +315,7 @@ exports.logout = async (req, res) => {
           });
         } else {
           console.log("failed");
-          res.send({
+          res.status(500).send({
             message: `Error logging out user.`,
           });
         }
