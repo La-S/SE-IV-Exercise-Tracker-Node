@@ -217,7 +217,7 @@ exports.assignWorkoutToTeam = async (req, res) => {
             }
             
             let currentWorkoutId = null;
-            let newWorkout = workoutValues;
+            let newWorkout = structuredClone(workoutValues);
             let exercises = await workoutToShare.getExercises();
             newWorkout.id = undefined;
             newWorkout.user_id = user.dataValues.id;
