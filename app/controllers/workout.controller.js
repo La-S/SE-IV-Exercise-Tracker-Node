@@ -209,18 +209,19 @@ exports.assignWorkoutToTeam = async (req, res) => {
         return;
     }
 
+    let exercises = await workoutToShare.getExercises();
     try {
         let users = await team.getUsers();
         for (const user of users) {
             if (user.role == "admin" || user.role == "coach") {
                 continue;
             }
-            
+
             let currentWorkoutId = null;
             let newWorkout = structuredClone(workoutValues);
-            let exercises = await workoutToShare.getExercises();
             newWorkout.id = undefined;
             newWorkout.user_id = user.dataValues.id;
+            newWorkout.parent_id = workoutValues.id;
             newWorkout.expected_date = expectedWorkoutDate;
             newWorkout = await Workout.create(newWorkout);
             currentWorkoutId = newWorkout.dataValues.id;
@@ -228,7 +229,7 @@ exports.assignWorkoutToTeam = async (req, res) => {
             for (const exercise of exercises) {
                 let currentExerciseId = null;
                 let exerciseValues = exercise.dataValues;
-                let newExercise = exerciseValues;
+                let newExercise = structuredClone(exerciseValues);
                 let sets = await exercise.getSets();
                 newExercise.workout_id = currentWorkoutId;
                 newExercise.id = undefined;
