@@ -138,12 +138,12 @@ exports.getExercises = async (req, res) => {
         res.status(404).send({ message: "workout not found!" });
         return;
     }
-    workout.getExercises({ include: exerciseTemplate })
+    workout.getExercises({ include: [{model: exerciseTemplate}, {model: Set}] })
         .then((data) =>
             res.status(200).send(data))
         .catch((err) => {
             res.status(500).send({
-                message: `Unknown error getting exercises`,
+                message: err.message || `Unknown error getting exercises`,
             });
         });
 };
