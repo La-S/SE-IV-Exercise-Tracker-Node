@@ -23,5 +23,8 @@ router.get("/:id/sets", [auth.authenticate], exercise.getSets);
 
 router.post("/workout/:id", [auth.authenticate], exercise.createMany);
 
+router.post("/workout/:id/sets", [auth.authenticate, auth.isCoachAdmin], exercise.createManyWithSets);
+
+
 export default router;
 
