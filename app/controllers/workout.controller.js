@@ -1,8 +1,11 @@
 import db from "../models/index.js";
 const Workout = db.workout;
 const exerciseTemplate = db.exerciseTemplate;
+const Exercise = db.exercise;
+const Set = db.set;
 const Op = db.Sequelize.Op;
 const User = db.user;
+const Team = db.team;
 const exports = {};
 
 // Create and Save a new workout
@@ -186,7 +189,91 @@ exports.getUserWorkoutsDated = (req, res) => {
                 message: err.message || "Some error occurred while retrieving workouts.",
             });
         });
-}
+};
+
+exports.assignWorkoutToTeam = async (req, res) => {
+    let workoutId = req.params.id;
+    let teamId = req.params.teamId;
+    let expectedWorkoutDate = req.body.date;
+
+    let workoutToShare = await Workout.findByPk(workoutId);
+    if (!workoutToShare) {
+        res.status(404).send({ message: "workout not found" });
+        return;
+    }
+    let workoutValues = workoutToShare.dataValues;
+
+    let team = await Team.findByPk(teamId);
+    if (!team) {
+        res.status(404).send({ message: "team not found" });
+        return;
+    }
+
+    let exercises = await workoutToShare.getExercises();
+    try {
+        let users = await team.getUsers();
+        for (const user of users) {
+            if (user.role == "admin" || user.role == "coach") {
+                continue;
+            }
+
+            let currentWorkoutId = null;
+            let newWorkout = structuredClone(workoutValues);
+            newWorkout.id = undefined;
+            newWorkout.user_id = user.dataValues.id;
+            newWorkout.parent_id = workoutValues.id;
+            newWorkout.expected_date = expectedWorkoutDate;
+            newWorkout = await Workout.create(newWorkout);
+            currentWorkoutId = newWorkout.dataValues.id;
+
+            for (const exercise of exercises) {
+                let currentExerciseId = null;
+                let exerciseValues = exercise.dataValues;
+                let newExercise = structuredClone(exerciseValues);
+                let sets = await exercise.getSets();
+                newExercise.workout_id = currentWorkoutId;
+                newExercise.id = undefined;
+                newExercise = await Exercise.create(newExercise);
+                currentExerciseId = newExercise.dataValues.id;
+
+                for (const set of sets) {
+                    let setValues = set.dataValues;
+                    setValues.exercise_id = currentExerciseId;
+                    setValues.id = undefined;
+                    await Set.create(setValues);
+                }
+            }
+        }
+        res.status(200).send({ message: "workout shared successfully" });
+        return;
+    }
+    catch (err) {
+        res.status(500).send({ message: err.message || "Something went wrong sharing the workout with the team" });
+        return;
+    }
+};
+
+exports.getTeamWorkoutsDated = async (req, res) => {
+    const id = req.params.id;
+    const startDate = req.body.startDate;
+    const endDate = req.body.endDate;
+    const team = await Team.findByPk(id);
+    if (!team) {
+        res.status(404).send({ message: "team not found!" });
+        return;
+    }
+    let users = await team.getUsers();
+    let workouts = [];
+    for (const user of users) {
+        let userId = user.dataValues.id;
+        let workoutData = await Workout.findAll({ where: { user_id: userId, expected_date: { [Op.between]: [startDate, endDate] } } });
+        for (const workout of workoutData) {
+            workouts.push(workout);
+        }
+    }
+    res.status(200).send(workouts);
+
+};
 
 function convertToSnake(req) {
     let updateInfo = {};
