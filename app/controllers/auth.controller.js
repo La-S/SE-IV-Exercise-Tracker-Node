@@ -334,4 +334,25 @@ exports.logout = async (req, res) => {
     });
   }
 };
+
+exports.getSessionValidity = async (req, res) => {
+  Session.findAll({ where: { token: req.body.token } })
+    .then((data) => {
+      let session = data[0];
+      console.log(session.expirationDate);
+      if (session != null) {
+        if (session.expirationDate >= Date.now()) {
+          return res.status(200).send({ message: "token not expired" });
+        } else
+          return res.status(401).send({
+            message: "Unauthorized! Expired Token, Logout and Login again",
+          });
+      }
+    })
+    .catch((err) => {
+      return res.status(500).send({
+        message: err.message || "an unknown error occurred while authenticating",
+      });
+    });
+}
 export default exports;

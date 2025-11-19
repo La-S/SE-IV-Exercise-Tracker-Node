@@ -14,5 +14,7 @@ router.post("/login", auth.login);
 // Logout
 router.post("/logout", auth.logout);
 
+router.post("/authenticate", auth.getSessionValidity)
+
 export default router
 
