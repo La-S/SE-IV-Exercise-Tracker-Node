@@ -13,7 +13,7 @@ router.get("/", [auth.authenticate, auth.isCoachAdmin], workout.findAll);
 router.get("/:id", [auth.authenticate], workout.findOne);
 
 // Update a workout with id
-router.put("/:id", [auth.authenticate, auth.isCoachAdmin], workout.update);
+router.put("/:id", [auth.authenticate], workout.update);
 
 // Delete a workout with id
 router.delete("/:id", [auth.authenticate, auth.isCoachAdmin], workout.delete);
