@@ -52,7 +52,7 @@ exports.login = async (req, res) => {
     console.log(data);
     email = data.email;
     firstName = data.given_name;
-    lastName = data.family_name;
+    lastName = data.family_name || "";
   }
 
 
@@ -77,7 +77,7 @@ exports.login = async (req, res) => {
         }
         user = {
           first_name: firstName,
-          last_name: lastName,
+          last_name: lastName || "",
           email: email,
           role: role
         };
