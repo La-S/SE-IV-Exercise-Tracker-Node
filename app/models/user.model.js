@@ -15,7 +15,7 @@ const User = SequelizeInstance.define("user", {
   },
   last_name: {
     type: Sequelize.STRING(25),
-    allowNull: false,
+    allowNull: true,
   },
   email: {
     type: Sequelize.STRING(100),
