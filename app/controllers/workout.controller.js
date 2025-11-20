@@ -218,7 +218,7 @@ exports.assignWorkoutToTeam = async (req, res) => {
             }
 
             let currentWorkoutId = null;
-            let newWorkout = structuredClone(workoutValues);
+            let newWorkout = JSON.parse(JSON.stringify(workoutValues));
             newWorkout.id = undefined;
             newWorkout.user_id = user.dataValues.id;
             newWorkout.parent_id = workoutValues.id;
@@ -229,7 +229,7 @@ exports.assignWorkoutToTeam = async (req, res) => {
             for (const exercise of exercises) {
                 let currentExerciseId = null;
                 let exerciseValues = exercise.dataValues;
-                let newExercise = structuredClone(exerciseValues);
+                let newExercise = JSON.parse(JSON.stringify(exerciseValues));
                 let sets = await exercise.getSets();
                 newExercise.workout_id = currentWorkoutId;
                 newExercise.id = undefined;
