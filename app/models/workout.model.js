@@ -14,10 +14,10 @@ const Workout = SequelizeInstance.define("workout", {
         type: Sequelize.STRING(500)
     },
     expected_date: {
-        type: Sequelize.DATE
+        type: Sequelize.DATEONLY
     },
     date: {
-        type: Sequelize.DATE
+        type: Sequelize.DATEONLY
     },
     total_time: {
         type: Sequelize.INTEGER
