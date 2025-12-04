@@ -27,6 +27,7 @@ router.get("/user/:id", [auth.authenticate], workout.getWorkoutsForUser);
 //get workouts for user in date range
 router.post("/user/:id/dated", [auth.authenticate], workout.getUserWorkoutsDated);
 
+//get workouts for all users in a team in date range
 router.post("/team/:id/dated", [auth.authenticate, auth.isCoachAdmin], workout.getTeamWorkoutsDated);
 
 //add a workout to all users in a team
