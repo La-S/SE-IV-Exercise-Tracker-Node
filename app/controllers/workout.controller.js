@@ -223,6 +223,7 @@ exports.assignWorkoutToTeam = async (req, res) => {
             newWorkout.user_id = user.dataValues.id;
             newWorkout.parent_id = workoutValues.id;
             newWorkout.expected_date = expectedWorkoutDate;
+            newWorkout.team_id = teamId;
             newWorkout = await Workout.create(newWorkout);
             currentWorkoutId = newWorkout.dataValues.id;
 
@@ -258,21 +259,18 @@ exports.getTeamWorkoutsDated = async (req, res) => {
     const startDate = req.body.startDate;
     const endDate = req.body.endDate;
     const team = await Team.findByPk(id);
+    let workouts = [];
     if (!team) {
         res.status(404).send({ message: "team not found!" });
         return;
     }
-    let users = await team.getUsers();
-    let workouts = [];
-    for (const user of users) {
-        let userId = user.dataValues.id;
-        let workoutData = await Workout.findAll({ where: { user_id: userId, expected_date: { [Op.between]: [startDate, endDate] } } });
-        for (const workout of workoutData) {
-            workouts.push(workout);
-        }
+    try{
+        workouts = await team.getWorkouts({expected_date: { [Op.between]: [startDate, endDate] }});
+        res.status(200).send(workouts);
     }
-    res.status(200).send(workouts);
-
+    catch(err){
+        res.status(500).send({message: err.message || "Something went wrong getting workouts for the team"});
+    }
 };
 
 function convertToSnake(req) {
@@ -285,6 +283,7 @@ function convertToSnake(req) {
     updateInfo.date = req.date ?? undefined;
     updateInfo.total_time = req.totalTime ?? undefined;
     updateInfo.focus_area = req.focusArea ?? undefined;
+    updateInfo.team_id = req.teamId ?? undefined;
     return updateInfo;
 }
 
