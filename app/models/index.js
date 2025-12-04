@@ -72,5 +72,10 @@ db.user.hasMany(db.userStats,
 db.userStats.belongsTo(db.user,
     { foreignKey: { name: "user_Id", allowNull: false }, onDelete: "CASCADE" });
 
+db.team.hasMany(db.workout, 
+    { foreignKey: { name: "team_id", allowNull: true }, onDelete: "CASCADE" });
+db.workout.belongsTo(db.team,
+    { foreignKey: { name: "team_id", allowNull: true }, onDelete: "CASCADE" });
+
 db.sequelize.sync();
 export default db;
