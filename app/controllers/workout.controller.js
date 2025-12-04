@@ -265,7 +265,7 @@ exports.getTeamWorkoutsDated = async (req, res) => {
         return;
     }
     try{
-        workouts = await team.getWorkouts({expected_date: { [Op.between]: [startDate, endDate] }});
+        workouts = await team.getWorkouts({where : {expected_date: { [Op.between]: [startDate, endDate] }}});
         res.status(200).send(workouts);
     }
     catch(err){
